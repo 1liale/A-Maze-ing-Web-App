@@ -1,0 +1,60 @@
+# Go (Golang)
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+*/_test/
+
+# Compiled Go binaries
+*.test
+*.exe
+*.prof
+
+# Dependency directories
+vendor/
+Godeps/
+*/.glide/
+
+# Docker
+Dockerfile
+docker-compose.yml
+docker-compose.override.yml
+*.log
+*.tar
+
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfvars
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraform/
+.terraformrc
+crash.log
+crash.*.log
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# Temporary files
+*.log
+*.swp
+*.bak
+*.backup
+*.orig
+
+# vim
+*.swp

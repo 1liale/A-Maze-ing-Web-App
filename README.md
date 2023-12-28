@@ -12,7 +12,8 @@ Completion: 1 month
 4. Demonstrate understanding of key Golang concepts by generating and solving mazes: functional programming, network services, and concurrent program design (via goroutines and multi-cores for parallel computation)
 5. Basic frontend setup with Sveltekit to allow user interaction with the maze (mouse drag to solve, view solution, etc)
 6. Integrate with Gin REST API framework to connect backend services to frontend views.
-7. Cloud Deployment with AWS (EC2 instance or ECS)
+7. Cloud Deployment with AWS (EC2 instance or ECS) 
+8. Leverage IaC with Terraform to declaratively provision Cloud resrouces
 
 ## Limitations:
 1. Generate and solve "perfect" mazes (only one solution: i.e one entry & exit)
