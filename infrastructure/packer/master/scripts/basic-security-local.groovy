@@ -8,7 +8,7 @@ def instance = Jenkins.getInstance()
 println "--> creating user (local) admin"
 
 def hudsonRealm = new HudsonPrivateSecurityRealm(false)
-hudsonRealm.createAccount('admin','admin')
+hudsonRealm.createAccount('#USERNAME','#PASSWORD') // setup default username and passwd for jenkins master
 instance.setSecurityRealm(hudsonRealm)
 
 def strategy = new FullControlOnceLoggedInAuthorizationStrategy()
