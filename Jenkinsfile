@@ -11,10 +11,6 @@ pipeline {
         stage("Backend Build"){
             steps {
                 echo "Building backend image..."
-                sh "pwd"
-                dir('backend') {
-                    sh "pwd"
-                }
             }
         }
     }
