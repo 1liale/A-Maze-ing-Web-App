@@ -15,7 +15,6 @@ pipeline {
                 dir('backend') {
                     sh "pwd"
                 }
-                sh "pwd"
             }
         }
     }
