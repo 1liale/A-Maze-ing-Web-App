@@ -13,3 +13,6 @@ crash.log
 crash.*.log
 
 basic-security.groovy
+
+# Packer
+/packer/

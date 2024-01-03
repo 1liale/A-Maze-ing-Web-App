@@ -40,7 +40,6 @@ resource "aws_launch_configuration" "jenkins_workers_launch_conf" {
   name            = "jenkins_workers_asg_conf"
   image_id        = data.aws_ami.jenkins_worker.id
   instance_type   = var.instance_type
-  key_name        = var.key
   iam_instance_profile = aws_iam_instance_profile.jenkins_instance_profile.name
   security_groups = [aws_security_group.jenkins_worker_sg.id]
   user_data       = templatefile("scripts/join-cluster.tftpl", {
@@ -67,7 +66,7 @@ resource "aws_autoscaling_group" "jenkins_workers" {
   launch_configuration = aws_launch_configuration.jenkins_workers_launch_conf.name
   availability_zones = ["us-east-1d"]
   min_size             = 1
-  desired_capacity     = 2
+  desired_capacity     = 1
   max_size             = 4
 
   depends_on = [aws_instance.jenkins_master]

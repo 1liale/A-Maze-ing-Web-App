@@ -28,8 +28,8 @@ variable "jenkins_credentials_id" {
   default = "jenkins-workers"
 }
 
-variable "key" {
-  type        = string
-  description = "SSH key pair"
-  default = "terraformkp"
-}
+# variable "key" {
+#   type        = string
+#   description = "SSH key pair"
+#   default = "terraformkp"
+# }
