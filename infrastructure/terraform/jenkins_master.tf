@@ -12,7 +12,7 @@ data "aws_ami" "jenkins_master" {
 resource "aws_security_group" "jenkins_master_sg" {
   name        = "jenkins_master_sg"
   description = "Allow Ports 22, 8080"
-  vpc_id = "vpc-0036a7a64a87e6651"
+  vpc_id = aws_vpc.jenkins_vpc.id
 
   # Allow Incoming SSH from Anywhere
   ingress {
@@ -20,16 +20,7 @@ resource "aws_security_group" "jenkins_master_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # Allow Incoming HTTPS from Anywhere
-  ingress {
-    description = "Allow HTTPS Traffic"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [var.my_ip]
   }
 
   # Allow Incoming HTTP from Anywhere
@@ -50,22 +41,27 @@ resource "aws_security_group" "jenkins_master_sg" {
   }
 
   tags = {
-    Name = "jenkins_master_sg"
+    Name = "jenkins-master-sg"
   }
 }
 
 resource "aws_instance" "jenkins_master" {
   ami                    = data.aws_ami.jenkins_master.id
   instance_type          = var.instance_type
+  key_name               = var.key
+
   vpc_security_group_ids = [aws_security_group.jenkins_master_sg.id]
+
+  subnet_id = aws_subnet.public_subnet.id
+  associate_public_ip_address = true
 
   root_block_device {
     volume_type           = "gp3"
     volume_size           = 15
-    delete_on_termination = false
+    delete_on_termination = true
   }
 
   tags = {
-    Name   = "jenkins_master"
+    Name   = "jenkins-master"
   }
 }
