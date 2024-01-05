@@ -44,8 +44,3 @@ variable "availability_zone" {
   type = string
   description = "Preferred availability zone"
 }
-
-variable "my_ip" {
-  type = string
-  description = "Limit jenkins SSH connection to my IP for better security"
-}

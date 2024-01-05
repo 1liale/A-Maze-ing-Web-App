@@ -1,17 +1,7 @@
-data "aws_ami" "jenkins_worker" {
-  most_recent = true
-  owners = ["self"]
-
-  filter {
-    name = "name"
-    values = ["jenkins-worker"]
-  }
-}
-
-# Create security group 
+# Define security group 
 resource "aws_security_group" "jenkins_worker_sg" {
-  name        = "jenkins_worker_sg"
-  description = "Allows only SSH connections from Jenkins master"
+  name        = "jenkins-worker-sg"
+  description = "Allows SSH from master"
   vpc_id = aws_vpc.jenkins_vpc.id
 
   # Allow Incoming SSH from Jenkins master SG
@@ -36,38 +26,22 @@ resource "aws_security_group" "jenkins_worker_sg" {
   }
 }
 
-resource "aws_iam_role" "jenkins_role" {
-  name = "jenkins_role"
+data "aws_ami" "jenkins_worker" {
+  most_recent = true
+  owners = ["self"]
 
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Sid    = "RoleForEC2"
-        Principal = {
-          Service = "ec2.amazonaws.com"
-        }
-      },
-    ]
-  })
-}
-
-resource "aws_iam_instance_profile" "jenkins_instance_profile" {
-  name = "jenkins-instance-profile"
-  role = aws_iam_role.jenkins_role.name
+  filter {
+    name = "name"
+    values = ["jenkins-worker"]
+  }
 }
 
 # Specify worker launch configuration
 resource "aws_launch_configuration" "jenkins_workers_launch_conf" {
-  name            = "jenkins_workers_asg_conf"
+  name            = "jenkins-workers-asg-conf"
   image_id        = data.aws_ami.jenkins_worker.id
   instance_type   = var.instance_type
-
   key_name        = var.key
-  associate_public_ip_address = true
-
   iam_instance_profile = aws_iam_instance_profile.jenkins_instance_profile.name
   security_groups = [aws_security_group.jenkins_worker_sg.id]
   user_data       = templatefile("scripts/join-cluster.tftpl", {
@@ -79,7 +53,7 @@ resource "aws_launch_configuration" "jenkins_workers_launch_conf" {
 
   root_block_device {
     volume_type           = "gp3"
-    volume_size           = 15
+    volume_size           = 30
     delete_on_termination = true
   }
 
