@@ -3,39 +3,20 @@
 package main
 
 import (
-	"io"
-	"os"
+	"fmt"
 
 	"github.com/1liale/maze-backend/handlers"
+	"github.com/1liale/maze-backend/middlewares"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 
-	"github.com/sirupsen/logrus"
 	ginlogrus "github.com/toorop/gin-logrus"
 )
 
-var logger *logrus.Logger
+var logger *middlewares.CustomStdLogger
 
 func init() {
-	// load env
-	err := godotenv.Load()
-	if err != nil {
-	}
-
-	// configure logger
-	logger = logrus.New()
-	logLevel, err := logrus.ParseLevel(os.Getenv("LOGGER_LEVEL"))
-	if err != nil {
-		logLevel = logrus.InfoLevel
-	}
-
-	f, _ := os.Create("log.out")
-	channels := io.MultiWriter(f, os.Stdout)
-
-	logger.SetLevel(logLevel)
-	logger.SetOutput(channels)
-	logger.SetReportCaller(true)
+	logger = middlewares.NewLogger()
 }
 
 func main() {
@@ -45,16 +26,25 @@ func main() {
 
 	// middlewares
 	router.Use(
-		ginlogrus.Logger((logger)),
+		ginlogrus.Logger(logger),
 		gin.Recovery(),
+		middlewares.ErrorHandler(),
 	)
 
 	// group CRUD endpoints
 	v1 := router.Group("/api/v1")
 	{
-		v1.GET("/api-health", handlers.SystemCheck)
+		v1.GET("/err", func(c *gin.Context) {
+			c.Error(fmt.Errorf("internal error"))
+		})
 	}
 
 	router.GET("/api-health", handlers.SystemCheck)
+
+	// Test endpoint to trigger error
+	router.GET("/err", func(c *gin.Context) {
+		c.Error(fmt.Errorf("Error Test"))
+	})
+
 	router.Run(port)
 }
