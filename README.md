@@ -1,10 +1,6 @@
 # A-Maze-ing-Web-App
 A personal project to experiment with using Golang to generate and solve mazes built on a simple Sveltekit Frontend, Gin REST API, and Go backend
 
-## Estimated Timeline:
-Time to First Deployment: 2 weeks \
-Completion: 1 month
-
 ## Key Objectives: 
 1. Set up and optimize a CI/CD pipeline with Jenkins and Github Actions (run unit tests, static code analysis, etc)
 2. Generate and optimize Dockerfiles for each container
