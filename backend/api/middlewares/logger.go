@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"fmt" // need it to print out errors before logger is properly setup
 	"io"
 	"os"
 	"strings"
@@ -47,14 +48,16 @@ func NewCustomLogger() *CustomStdLogger {
 	// load env
 	err := godotenv.Load()
 	if err != nil {
-		logger.Fatal("Error loading .env file")
+		fmt.Fprintf(os.Stderr, "Error loading .env file: %v\n", err)
+		os.Exit(1)
 	}
 
 	// create api.log if it doesn't exist yet
 	log_path := "api.log"
 	_, err = os.OpenFile(log_path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
-		logger.Errorf("Error opening %s file", log_path)
+		fmt.Fprintf(os.Stderr, "Error opening %s file: %v\n", log_path, err)
+		os.Exit(1)
 	}
 
 	// configure logger output level
@@ -86,23 +89,4 @@ func NewCustomLogger() *CustomStdLogger {
 	})
 
 	return &CustomStdLogger{logger}
-}
-
-var (
-	invalidArgMessage      = "Invalid arg: %s"
-	invalidArgValueMessage = "Invalid value for argument: %s: %v"
-	missingArgMessage      = "Missing arg: %s"
-)
-
-// CustomStdLogger methods to print out standardized error messages
-func (l *CustomStdLogger) InvalidArg(argumentName string) {
-	l.Errorf(invalidArgMessage, argumentName)
-}
-
-func (l *CustomStdLogger) InvalidArgValue(argumentName string, argumentValue string) {
-	l.Errorf(invalidArgValueMessage, argumentName, argumentValue)
-}
-
-func (l *CustomStdLogger) MissingArg(argumentName string) {
-	l.Errorf(invalidArgValueMessage, argumentName)
 }
