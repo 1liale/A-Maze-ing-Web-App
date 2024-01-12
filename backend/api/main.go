@@ -1,5 +1,6 @@
 // Package main is the root package managing the gin-gonic REST API.
 
+// main.go
 package main
 
 import (
@@ -7,10 +8,9 @@ import (
 
 	"github.com/1liale/maze-backend/handlers"
 	"github.com/1liale/maze-backend/middlewares"
+	ginlogrus "github.com/toorop/gin-logrus"
 
 	"github.com/gin-gonic/gin"
-
-	ginlogrus "github.com/toorop/gin-logrus"
 )
 
 var logger *middlewares.CustomStdLogger
@@ -22,6 +22,7 @@ func init() {
 func main() {
 	// init gin server
 	port := ":8080"
+
 	router := gin.New()
 
 	// middlewares
