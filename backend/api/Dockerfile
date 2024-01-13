@@ -1,4 +1,5 @@
 # syntax=docker/dockerfile:1
+# go project multistage build
 
 # Use standard debian based image to build with stability
 FROM golang:1.21 AS build
@@ -26,6 +27,8 @@ WORKDIR /app
 
 # Set gin mode
 ENV GIN_MODE=release
+
+RUN apk update && apk add --no-cache curl
 
 COPY --from=build app/app .
 COPY .env .env
