@@ -21,7 +21,7 @@ func ErrorHandler() gin.HandlerFunc {
 					"message": privte_err.Msg,
 				})
 			} else {
-				// return with status code 500 otherwise
+				// always return with status code 500 otherwise
 				code := http.StatusInternalServerError
 				c.JSON(code,
 					models.InternalError{
