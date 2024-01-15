@@ -10,18 +10,25 @@ import (
 
 func GenerateMaze(ctx *gin.Context) {
 	var maze_input maze.InputGenerateMaze
-
 	if err := ctx.ShouldBindJSON(&maze_input); err != nil {
 		ctx.Error(err)
 		return
 	}
 
 	fmt.Printf("Received Request Body: %+v\n", maze_input)
-	output, err := services.MazeGenerator(&maze_input)
+	m, err := services.MazeGenerator(&maze_input)
 	if err != nil {
 		ctx.Error(err)
 		return
 	}
+	data := maze.ExtractMazeOutputData(m)
 
-	ctx.JSON(200, output)
+	solution, err := services.MazeSolver(m, &maze_input, nil)
+
+	output := maze.MazeOutput{
+		Data:     data,
+		Solution: solution,
+	}
+
+	ctx.JSON(200, gin.H{"data": output})
 }

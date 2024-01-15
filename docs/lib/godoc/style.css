@@ -178,10 +178,10 @@ div#nav table td {
 #pkg-index h3 {
   font-size: 1rem;
 }
-.pkg-dir {
+.pkg-int {
   padding: 0 0.625rem;
 }
-.pkg-dir table {
+.pkg-int table {
   border-collapse: collapse;
   border-spacing: 0;
 }

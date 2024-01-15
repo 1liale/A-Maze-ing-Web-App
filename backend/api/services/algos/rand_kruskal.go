@@ -22,12 +22,14 @@ func RandKruskal(m *maze.Maze) {
 		subsets[i].Rank = 0
 	}
 
+	newCells := append([]maze.Cell{}, m.Cells...)
+	m.History = append(m.History, newCells)
 	for _, edge := range edges {
 		src, dest := edge.Src, edge.Dest
 		root1 := Find(subsets, src)
 		root2 := Find(subsets, dest)
-		var dir maze.Dir
-		if src/m.Width == dest/m.Width {
+		dir := 0
+		if src-dest == 1 {
 			dir = maze.L
 		} else {
 			dir = maze.U
@@ -37,6 +39,8 @@ func RandKruskal(m *maze.Maze) {
 			Union(subsets, root1, root2)
 			m.Cells[src].Wall |= dir
 			m.Cells[dest].Wall |= maze.Opp[dir]
+			newCells = append([]maze.Cell{}, m.Cells...)
+			m.History = append(m.History, newCells)
 		}
 	}
 }

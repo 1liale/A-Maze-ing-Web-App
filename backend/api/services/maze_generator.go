@@ -7,21 +7,22 @@ import (
 	"github.com/1liale/maze-backend/services/algos"
 )
 
-func MazeGenerator(input *maze.InputGenerateMaze) (maze.MazeOutput, error) {
+func MazeGenerator(input *maze.InputGenerateMaze) (*maze.Maze, error) {
 	// initialize a maze given input size
-	m := maze.Maze{}
-	m.InitMaze(input.Width, input.Height)
+	m := maze.NewMaze(input.Width, input.Height)
+	m.SetRandomEndpoints()
 
 	// generate a maze using the specified algorithm
-	fmt.Printf("Generating maze using algo: %s\n", input.Algorithm)
-	switch input.Algorithm {
-	case maze.PrimAlgorithm:
-		algos.RandPrim(&m)
-	case maze.KruskalAlgorithm:
-		algos.RandKruskal(&m)
+	generator := input.Algorithms.Generator
+	fmt.Printf("Generating maze using algo: %s\n\n", generator)
+	switch generator {
+	case maze.Prim:
+		algos.RandPrim(m)
+	case maze.Kruskal:
+		algos.RandKruskal(m)
 	}
 
-	fmt.Printf("maze: %+v\n", m)
-
-	return maze.MazeOutput{Data: "Hello", Solution: "World"}, nil
+	// Display "perfect" maze
+	m.Display()
+	return m, nil
 }
