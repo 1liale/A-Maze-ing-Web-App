@@ -4,10 +4,11 @@
 package main
 
 import (
-	"fmt"
+	"net/http"
 
 	"github.com/1liale/maze-backend/handlers"
 	"github.com/1liale/maze-backend/middlewares"
+	"github.com/1liale/maze-backend/models"
 	ginlogrus "github.com/toorop/gin-logrus"
 
 	"github.com/gin-gonic/gin"
@@ -58,7 +59,10 @@ func main() {
 
 	// Test endpoint to trigger error
 	router.GET("/err", func(c *gin.Context) {
-		c.Error(fmt.Errorf("Error Test"))
+		c.Error(&models.InternalError{
+			Code: http.StatusBadGateway,
+			Msg:  "Testing Error Endpoint",
+		})
 	})
 
 	router.Run(port)

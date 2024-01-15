@@ -34,16 +34,36 @@ func (hook *LogWriterHook) Levels() []logrus.Level {
 	return hook.LogLevels
 }
 
+// configure logger output level
+func ParseLogLevels(env_name string) []logrus.Level {
+	log_levels_env := os.Getenv(env_name)
+	if log_levels_env == "" {
+		return nil
+	}
+	log_level_strings := strings.Split(log_levels_env, ",")
+	log_level_arr := make([]logrus.Level, len(log_level_strings))
+	for i, log_level := range log_level_strings {
+		parsed_level, err := logrus.ParseLevel(log_level)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error parsing log_level %s: %v\n", log_level, err)
+			os.Exit(1)
+		}
+		log_level_arr[i] = parsed_level
+	}
+
+	return log_level_arr
+}
+
 func NewCustomLogger() *CustomStdLogger {
 	// set logger configurations
 	logger := logrus.New()
-	logFormat := logrus.TextFormatter{
+	log_format := logrus.TextFormatter{
 		TimestampFormat: time.RFC1123Z,
 		FullTimestamp:   true,
 		ForceColors:     true,
 	}
 	logger.SetOutput(io.Discard)
-	logger.SetFormatter(&logFormat)
+	logger.SetFormatter(&log_format)
 
 	// load env
 	err := godotenv.Load()
@@ -60,13 +80,8 @@ func NewCustomLogger() *CustomStdLogger {
 		os.Exit(1)
 	}
 
-	// configure logger output level
-	LOG_LEVELS := os.Getenv("LOG_LEVELS")
-	logLevelStrings := strings.Split(LOG_LEVELS, ",")
-	logLevelArr := make([]logrus.Level, len(logLevelStrings))
-	for i, logLevel := range logLevelStrings {
-		logLevelArr[i], err = logrus.ParseLevel(logLevel)
-	}
+	file_log_levels := ParseLogLevels("FILE_LOG_LEVELS")
+	output_log_levels := ParseLogLevels("OUTPUT_LOG_LEVELS")
 
 	// setup logrotation using lumberjack
 	error_logrot := lumberjack.Logger{
@@ -78,14 +93,11 @@ func NewCustomLogger() *CustomStdLogger {
 
 	logger.AddHook(&LogWriterHook{ // Send logs with level higher than warning to stderr
 		Writer:    &error_logrot,
-		LogLevels: logLevelArr,
+		LogLevels: file_log_levels,
 	})
 	logger.AddHook(&LogWriterHook{ // Send info and debug logs to stdout
-		Writer: os.Stdout,
-		LogLevels: []logrus.Level{
-			logrus.InfoLevel,
-			logrus.DebugLevel,
-		},
+		Writer:    os.Stdout,
+		LogLevels: output_log_levels,
 	})
 
 	return &CustomStdLogger{logger}
