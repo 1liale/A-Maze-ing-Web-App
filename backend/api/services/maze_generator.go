@@ -7,7 +7,7 @@ import (
 	"github.com/1liale/maze-backend/services/algos"
 )
 
-func MazeGenerator(input *maze.InputGenerateMaze) (*maze.Maze, error) {
+func MazeGenerator(input *maze.InputMazeBase) (*maze.Maze, error) {
 	// initialize a maze given input size
 	m := maze.NewMaze(input.Width, input.Height)
 	m.SetRandomEndpoints()

@@ -9,7 +9,7 @@ import (
 )
 
 func GenerateMaze(ctx *gin.Context) {
-	var maze_input maze.InputGenerateMaze
+	var maze_input maze.InputMazeBase
 	if err := ctx.ShouldBindJSON(&maze_input); err != nil {
 		ctx.Error(err)
 		return
@@ -23,12 +23,17 @@ func GenerateMaze(ctx *gin.Context) {
 	}
 	data := maze.ExtractMazeOutputData(m)
 
-	solution, err := services.MazeSolver(m, &maze_input, nil)
+	m, err = services.MazeSolver(m, &maze_input, nil)
+	if err != nil {
+		ctx.Error(err)
+		return
+	}
+	solution := maze.ExtractMazeOutputSoln(m)
 
 	output := maze.MazeOutput{
 		Data:     data,
 		Solution: solution,
 	}
 
-	ctx.JSON(200, gin.H{"data": output})
+	ctx.JSON(200, gin.H{"response": output})
 }

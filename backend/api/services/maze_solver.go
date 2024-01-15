@@ -7,7 +7,7 @@ import (
 	"github.com/1liale/maze-backend/services/algos"
 )
 
-func MazeSolver(m *maze.Maze, input *maze.InputGenerateMaze, data *maze.MazeData) (maze.MazeOutputSolution, error) {
+func MazeSolver(m *maze.Maze, input *maze.InputMazeBase, data *maze.MazeData) (*maze.Maze, error) {
 	if m == nil {
 		m = maze.NewMaze(input.Width, input.Height)
 		m.InitMaze(data)
@@ -25,5 +25,5 @@ func MazeSolver(m *maze.Maze, input *maze.InputGenerateMaze, data *maze.MazeData
 		algos.BBFS(m)
 	}
 
-	return maze.ExtractMazeOutputSoln(m), nil
+	return m, nil
 }
