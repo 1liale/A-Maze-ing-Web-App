@@ -17,4 +17,4 @@ COPY --from=build /app/package*.json /app/yarn.lock ./
 
 EXPOSE 3000
 
-CMD ["yarn", "start"]
+CMD ["yarn", "dev"]
