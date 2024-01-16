@@ -1,6 +1,7 @@
 version: "3.8"
 
 # startup order: database -> server -> client
+# setup for local development to approximate prod (db is local image, final will be on RDS)
 
 volumes:
   db-data:

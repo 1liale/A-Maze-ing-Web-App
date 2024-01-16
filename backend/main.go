@@ -4,20 +4,22 @@
 package main
 
 import (
-	"net/http"
-
 	"github.com/1liale/maze-backend/handlers"
 	"github.com/1liale/maze-backend/middlewares"
 	"github.com/1liale/maze-backend/models"
+	"github.com/gin-contrib/cors"
+	"github.com/jinzhu/gorm"
 	ginlogrus "github.com/toorop/gin-logrus"
 
 	"github.com/gin-gonic/gin"
 )
 
 var logger *middlewares.CustomStdLogger
+var db *gorm.DB
 
 func init() {
 	logger = middlewares.NewCustomLogger()
+	db = models.SetupModels()
 }
 
 func main() {
@@ -31,23 +33,13 @@ func main() {
 		ginlogrus.Logger(logger),
 		gin.Recovery(),
 		middlewares.ErrorHandler(),
+		cors.Default(), // enable CORS for all origins with all HTTP requests allowed by default
+		middlewares.SetupDB(db),
 	)
 
-	// group CRUD endpoints
-	v1 := router.Group("/api/v1")
+	// require auth for requests that modify DB
+	v1 := router.Group("/auth")
 	{
-		// search db for maze record matching username, empty otherwise
-		v1.POST("/find-maze", handlers.FindMaze)
-
-		// list number of maze records specified by the user or what's available, empty otherwise
-		v1.POST("/list-mazes", handlers.ListMazes)
-
-		// generate a new maze and corresponding solution with given user-specified dimensions
-		v1.POST("/generate-maze", handlers.GenerateMaze)
-
-		// solve an unknown maze and send back solution
-		v1.POST("/solve-maze", handlers.SolveMaze)
-
 		// save maze record (update if user exists already)
 		v1.POST("/save-maze", handlers.SaveMaze)
 
@@ -55,15 +47,27 @@ func main() {
 		v1.DELETE("/delete-maze", handlers.DeleteMaze)
 	}
 
+	// search db for maze record matching username, empty otherwise
+	router.POST("/find-maze", handlers.FindMaze)
+
+	// list number of maze records specified by the user or what's available, empty otherwise
+	router.POST("/list-mazes", handlers.ListMazes)
+
+	// generate a new maze and corresponding solution with given user-specified dimensions
+	router.POST("/generate-maze", handlers.GenerateMaze)
+
+	// solve an unknown maze and send back solution
+	router.POST("/solve-maze", handlers.SolveMaze)
+
+	// gets a system check on api health
 	router.GET("/api-health", handlers.SystemCheck)
 
-	// Test endpoint to trigger error
-	router.GET("/err", func(c *gin.Context) {
-		c.Error(&models.InternalError{
-			Code: http.StatusBadGateway,
-			Msg:  "Testing Error Endpoint",
-		})
-	})
+	// TODO: Remove, for testing purpose only
+	router.GET("/books", handlers.FindBooks)
+	router.POST("/books", handlers.CreateBook)       // create
+	router.GET("/books/:id", handlers.FindBook)      // find by id
+	router.PATCH("/books/:id", handlers.UpdateBook)  // update by id
+	router.DELETE("/books/:id", handlers.DeleteBook) // delete by id
 
 	router.Run(port)
 }
