@@ -14,7 +14,6 @@ func ErrorHandler() gin.HandlerFunc {
 		// after request
 		for _, e := range c.Errors {
 			err := e.Err
-			// Type check with
 			if privte_err, valid := err.(*models.InternalError); valid {
 				c.JSON(privte_err.Code, gin.H{
 					"code":    privte_err.Code,

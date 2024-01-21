@@ -3,21 +3,21 @@ package algos
 import (
 	"fmt"
 
-	"github.com/1liale/maze-backend/models/maze"
+	"github.com/1liale/maze-backend/models"
 	"github.com/adrianbrad/queue"
 )
 
-func rebuildPath(m *maze.Maze, parents map[int]int, pos int) {
-	var path []*maze.Cell
+func rebuildPath(m *models.Maze, parents map[int]int, pos int) {
+	var path []*models.Cell
 
 	for pos != m.Start.Pos {
 		if pos != m.End.Pos {
 			m.Cells[pos].State = "*"
 		}
-		path = append([]*maze.Cell{&m.Cells[pos]}, path...)
+		path = append([]*models.Cell{&m.Cells[pos]}, path...)
 		pos = parents[pos]
 	}
-	path = append([]*maze.Cell{&m.Cells[pos]}, path...)
+	path = append([]*models.Cell{&m.Cells[pos]}, path...)
 	m.Path = path
 
 	fmt.Print("path:")
@@ -28,7 +28,7 @@ func rebuildPath(m *maze.Maze, parents map[int]int, pos int) {
 	m.Display()
 }
 
-func BFS(m *maze.Maze) {
+func BFS(m *models.Maze) {
 	// queue of cell positions
 	q := queue.NewLinked([]int{})
 	visited := make([]bool, m.N_Cells)

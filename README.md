@@ -1,5 +1,48 @@
-# A-Maze-ing-Web-App
-A personal project to experiment with using Golang to generate and solve mazes built on a simple Sveltekit Frontend, Gin REST API, and Go backend
+# A-Maze-ing
+A personal full stack project to go into a deep dive on all aspects of infrastructure automation, CI/CD, DS & Algo, and frontend + backend web development.
+
+Ultimately, the goal of this project is less about the exact content it serves, which is a fun program that achieves the task of generating and solving perfect mazes. 
+ 
+Instead, by going through each step from ideation to production. I hope to become a more well-rounded developer capable of writing well-tested, structured, and performant code that can meet production quality.
+
+*Self note: progress is incremental, have patience and drink some tea 🍵
+
+> Status: WIP
+
+## Tools / Technologies
+- Frontend
+    - Sveltekit
+    - TailwindCSS
+    - Vercel for hosting
+    - Jest tests
+    - (optional) Three.js for rendering maze / user interaction
+- Backend
+    - Gin-gonic API
+        - HTTP requests validated
+        - handlers to perform CRUD to db and generate/solve mazes
+        - authication
+        - middlewares:
+            - custom logger with rotation
+            - global error handling with standardized error output
+    - Services written in Go
+        - Maze generation (i.e. Kruskal to build MST)
+        - Maze solving (i.e. Bidirectional search done concurrently with goroutines, channels, and wait groups)
+    - Testing with httptest and testify
+- Database
+    - Postgres
+- DevOps & Infrastructure
+    - GitHub actions + Status Checks on PR
+    - GitHub main branch protection
+    - Jenkins Pipeline (CI: build and test, no CD planned currently) 
+    - Dockerfiles with multi-stage builds to minimize image size
+    - Docker-compose
+        - synchronize local development
+        - service ordering using healthchecks and condition
+    - Terraform to provision AWS resources 
+        - declarative structure with HCL
+        - VPC, Subnets, IG, EC2, SG, ASG, RDS, ASG, IAM
+
+    - Packer to bake AWS AMI for Jenkins master and workers
 
 ## Key Objectives: 
 1. Set up and optimize a CI/CD pipeline with Jenkins and Github Actions (run unit tests, static code analysis, etc)
@@ -13,6 +56,6 @@ A personal project to experiment with using Golang to generate and solve mazes b
 9. Use Packer to bake custom AMIs
 
 ## Limitations:
-1. Generate and solve "perfect" mazes (only one solution: i.e one entry & exit)
-2. Very crud frontend (focus of this project is on devops and go backend configurations)
-3. Showcase basic idea of concurrent programming in Go using a bidirectional-bfs solution (can go into a lot more depth but sufficient for the demonstrative purposes of this application)
+1. Generate and solve "perfect" mazes (MSTs with only one path from entry to exit)
+2. Crud frontend (focus of this project is on devops and go backend configurations)
+3. Limited use of concurrency (can go into a lot more depth but sufficient for the demonstrative purposes of this application)

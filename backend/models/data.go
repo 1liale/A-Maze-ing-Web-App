@@ -1,4 +1,4 @@
-package maze
+package models
 
 type MazeData struct {
 	Start int   `json:"start" binding:"required"`

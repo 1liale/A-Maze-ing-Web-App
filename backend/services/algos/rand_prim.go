@@ -1,9 +1,7 @@
 package algos
 
-import (
-	"github.com/1liale/maze-backend/models/maze"
-)
+import "github.com/1liale/maze-backend/models"
 
-func RandPrim(maze *maze.Maze) {
+func RandPrim(maze *models.Maze) {
 
 }

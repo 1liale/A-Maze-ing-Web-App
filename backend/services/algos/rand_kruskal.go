@@ -3,14 +3,14 @@ package algos
 import (
 	"sort"
 
-	"github.com/1liale/maze-backend/models/maze"
+	"github.com/1liale/maze-backend/models"
 )
 
-func RandKruskal(m *maze.Maze) {
+func RandKruskal(m *models.Maze) {
 	n_cells := m.Height * m.Width
 
 	// build and sort edges by weight in ASC order
-	edges := maze.BuildEdges(m)
+	edges := models.BuildEdges(m)
 	sort.Slice(edges, func(i, j int) bool {
 		return edges[i].Weight < edges[j].Weight
 	})
@@ -22,7 +22,7 @@ func RandKruskal(m *maze.Maze) {
 		subsets[i].Rank = 0
 	}
 
-	newCells := append([]maze.Cell{}, m.Cells...)
+	newCells := append([]models.Cell{}, m.Cells...)
 	m.History = append(m.History, newCells)
 	for _, edge := range edges {
 		src, dest := edge.Src, edge.Dest
@@ -30,16 +30,16 @@ func RandKruskal(m *maze.Maze) {
 		root2 := Find(subsets, dest)
 		dir := 0
 		if src-dest == 1 {
-			dir = maze.L
+			dir = models.L
 		} else {
-			dir = maze.U
+			dir = models.U
 		}
 
 		if root1 != root2 {
 			Union(subsets, root1, root2)
 			m.Cells[src].Wall |= dir
-			m.Cells[dest].Wall |= maze.Opp[dir]
-			newCells = append([]maze.Cell{}, m.Cells...)
+			m.Cells[dest].Wall |= models.Opp[dir]
+			newCells = append([]models.Cell{}, m.Cells...)
 			m.History = append(m.History, newCells)
 		}
 	}

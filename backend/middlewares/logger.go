@@ -1,13 +1,12 @@
 package middlewares
 
 import (
-	"fmt" // need it to print out errors before logger is properly setup
+	// need it to print out errors before logger is properly setup
 	"io"
 	"os"
 	"strings"
 	"time"
 
-	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
@@ -45,8 +44,7 @@ func ParseLogLevels(env_name string) []logrus.Level {
 	for i, log_level := range log_level_strings {
 		parsed_level, err := logrus.ParseLevel(log_level)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error parsing log_level %s: %v\n", log_level, err)
-			os.Exit(1)
+			logrus.Fatal(err)
 		}
 		log_level_arr[i] = parsed_level
 	}
@@ -54,7 +52,7 @@ func ParseLogLevels(env_name string) []logrus.Level {
 	return log_level_arr
 }
 
-func NewCustomLogger() *CustomStdLogger {
+func InitLogger() *CustomStdLogger {
 	// set logger configurations
 	logger := logrus.New()
 	log_format := logrus.TextFormatter{
@@ -65,19 +63,11 @@ func NewCustomLogger() *CustomStdLogger {
 	logger.SetOutput(io.Discard)
 	logger.SetFormatter(&log_format)
 
-	// load env
-	err := godotenv.Load()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error loading .env file: %v\n", err)
-		os.Exit(1)
-	}
-
 	// create api.log if it doesn't exist yet
 	log_path := "api.log"
-	_, err = os.OpenFile(log_path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	_, err := os.OpenFile(log_path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error opening %s file: %v\n", log_path, err)
-		os.Exit(1)
+		logrus.Fatal(err)
 	}
 
 	file_log_levels := ParseLogLevels("FILE_LOG_LEVELS")
