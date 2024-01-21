@@ -1,5 +1,5 @@
 # A-Maze-ing
-A personal project to go explore aspects of infrastructure automation, CI/CD, DS & Algo, and frontend + backend web development.
+A personal project to explore aspects of infrastructure automation, CI/CD, DS & Algo, and fullstack web development.
 
 Ultimately, the goal of this project is less about the exact content it serves, which is a fun program that achieves the task of generating and solving perfect mazes. 
  
