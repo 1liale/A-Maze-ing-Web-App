@@ -1,13 +1,39 @@
 package middlewares
 
 import (
+	"fmt"
+	"os"
+
+	"github.com/1liale/maze-backend/models"
 	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
+	"github.com/sirupsen/logrus"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
-func SetupDB(db *gorm.DB) gin.HandlerFunc {
+func PropDBEnv(db *gorm.DB) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		ctx.Set("db", db)
 		ctx.Next()
 	}
+}
+
+func InitDB() *gorm.DB {
+	user := os.Getenv("POSTGRES_USER")
+	password := os.Getenv("POSTGRES_PASSWORD")
+	db_name := os.Getenv("POSTGRES_DB")
+	host := os.Getenv("POSTGRES_HOST")
+	port := os.Getenv("POSTGRES_PORT")
+
+	dsn := fmt.Sprintf("postgresql://%s:%s@%s:%s/%s", user, password, host, port, db_name)
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+
+	if err != nil {
+		logrus.Fatal(err)
+	}
+	logrus.Info("Successfully connected to: ", dsn)
+
+	db.AutoMigrate(&models.User{}, &models.MazeRecord{})
+
+	return db
 }

@@ -18,7 +18,9 @@ Instead, by going through each step from ideation to production. I hope to becom
     - (optional) Three.js for rendering maze / user interaction
 - Backend
     - Gin-gonic API
+        - HTTP requests validated
         - handlers to perform CRUD to db and generate/solve mazes
+        - authication
         - middlewares:
             - custom logger with rotation
             - global error handling with standardized error output

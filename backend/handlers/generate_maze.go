@@ -3,13 +3,13 @@ package handlers
 import (
 	"fmt"
 
-	"github.com/1liale/maze-backend/models/maze"
+	"github.com/1liale/maze-backend/models"
 	"github.com/1liale/maze-backend/services"
 	"github.com/gin-gonic/gin"
 )
 
 func GenerateMaze(ctx *gin.Context) {
-	var maze_input maze.InputMazeBase
+	var maze_input models.InputMazeBase
 	if err := ctx.ShouldBindJSON(&maze_input); err != nil {
 		ctx.Error(err)
 		return
@@ -21,16 +21,16 @@ func GenerateMaze(ctx *gin.Context) {
 		ctx.Error(err)
 		return
 	}
-	data := maze.ExtractMazeOutputData(m)
+	data := models.ExtractMazeOutputData(m)
 
 	m, err = services.MazeSolver(m, &maze_input, nil)
 	if err != nil {
 		ctx.Error(err)
 		return
 	}
-	solution := maze.ExtractMazeOutputSoln(m)
+	solution := models.ExtractMazeOutputSoln(m)
 
-	output := maze.MazeOutput{
+	output := models.MazeOutput{
 		Data:     data,
 		Solution: solution,
 	}

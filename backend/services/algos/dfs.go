@@ -1,7 +1,7 @@
 package algos
 
-import "github.com/1liale/maze-backend/models/maze"
+import "github.com/1liale/maze-backend/models"
 
-func DFS(m *maze.Maze) {
+func DFS(m *models.Maze) {
 
 }

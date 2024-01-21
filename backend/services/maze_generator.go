@@ -3,22 +3,22 @@ package services
 import (
 	"fmt"
 
-	"github.com/1liale/maze-backend/models/maze"
+	"github.com/1liale/maze-backend/models"
 	"github.com/1liale/maze-backend/services/algos"
 )
 
-func MazeGenerator(input *maze.InputMazeBase) (*maze.Maze, error) {
+func MazeGenerator(input *models.InputMazeBase) (*models.Maze, error) {
 	// initialize a maze given input size
-	m := maze.NewMaze(input.Width, input.Height)
+	m := models.NewMaze(input.Width, input.Height)
 	m.SetRandomEndpoints()
 
 	// generate a maze using the specified algorithm
 	generator := input.Algorithms.Generator
 	fmt.Printf("Generating maze using algo: %s\n\n", generator)
 	switch generator {
-	case maze.Prim:
+	case models.Prim:
 		algos.RandPrim(m)
-	case maze.Kruskal:
+	case models.Kruskal:
 		algos.RandKruskal(m)
 	}
 

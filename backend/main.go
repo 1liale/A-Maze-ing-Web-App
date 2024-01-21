@@ -4,12 +4,16 @@
 package main
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/1liale/maze-backend/handlers"
 	"github.com/1liale/maze-backend/middlewares"
-	"github.com/1liale/maze-backend/models"
 	"github.com/gin-contrib/cors"
-	"github.com/jinzhu/gorm"
+	"github.com/joho/godotenv"
+	"github.com/sirupsen/logrus"
 	ginlogrus "github.com/toorop/gin-logrus"
+	"gorm.io/gorm"
 
 	"github.com/gin-gonic/gin"
 )
@@ -18,14 +22,19 @@ var logger *middlewares.CustomStdLogger
 var db *gorm.DB
 
 func init() {
-	logger = middlewares.NewCustomLogger()
-	db = models.SetupModels()
+	// load environment variables from .env
+	err := godotenv.Load()
+	if err != nil {
+		logrus.Fatal(err)
+	}
+	db = middlewares.InitDB()
+	logger = middlewares.InitLogger()
 }
 
 func main() {
-	// init gin server
-	port := ":8080"
+	port := fmt.Sprintf(":%s", os.Getenv("API_PORT"))
 
+	// init gin server
 	router := gin.New()
 
 	// middlewares
@@ -33,41 +42,34 @@ func main() {
 		ginlogrus.Logger(logger),
 		gin.Recovery(),
 		middlewares.ErrorHandler(),
+		middlewares.PropDBEnv(db),
 		cors.Default(), // enable CORS for all origins with all HTTP requests allowed by default
-		middlewares.SetupDB(db),
 	)
 
 	// require auth for requests that modify DB
-	v1 := router.Group("/auth")
+	auth := router.Group("/").Use()
 	{
-		// save maze record (update if user exists already)
-		v1.POST("/save-maze", handlers.SaveMaze)
+		// create maze record for user (update if user exists already)
+		auth.PUT("/maze/:user", handlers.SaveMaze)
 
-		// delete maze record specified by the user, do nothing if not exist
-		v1.DELETE("/delete-maze", handlers.DeleteMaze)
+		// delete user and their records
+		auth.DELETE("/maze/:user", handlers.DeleteMaze)
 	}
 
-	// search db for maze record matching username, empty otherwise
-	router.POST("/find-maze", handlers.FindMaze)
+	// get records belonging to user
+	router.GET("/maze/:user", handlers.GetMazes)
 
 	// list number of maze records specified by the user or what's available, empty otherwise
-	router.POST("/list-mazes", handlers.ListMazes)
+	router.GET("/maze", handlers.ListMazes)
 
 	// generate a new maze and corresponding solution with given user-specified dimensions
-	router.POST("/generate-maze", handlers.GenerateMaze)
+	router.POST("/maze/generate", handlers.GenerateMaze)
 
 	// solve an unknown maze and send back solution
-	router.POST("/solve-maze", handlers.SolveMaze)
+	router.POST("/maze/solve", handlers.SolveMaze)
 
 	// gets a system check on api health
-	router.GET("/api-health", handlers.SystemCheck)
-
-	// TODO: Remove, for testing purpose only
-	router.GET("/books", handlers.FindBooks)
-	router.POST("/books", handlers.CreateBook)       // create
-	router.GET("/books/:id", handlers.FindBook)      // find by id
-	router.PATCH("/books/:id", handlers.UpdateBook)  // update by id
-	router.DELETE("/books/:id", handlers.DeleteBook) // delete by id
+	auth.GET("/api-health", handlers.SystemCheck)
 
 	router.Run(port)
 }
