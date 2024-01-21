@@ -1,11 +1,9 @@
 # A-Maze-ing
-A personal full stack project to go into a deep dive on all aspects of infrastructure automation, CI/CD, DS & Algo, and frontend + backend web development.
+A personal project to go explore aspects of infrastructure automation, CI/CD, DS & Algo, and frontend + backend web development.
 
 Ultimately, the goal of this project is less about the exact content it serves, which is a fun program that achieves the task of generating and solving perfect mazes. 
  
 Instead, by going through each step from ideation to production. I hope to become a more well-rounded developer capable of writing well-tested, structured, and performant code that can meet production quality.
-
-*Self note: progress is incremental, have patience and drink some tea 🍵
 
 > Status: WIP
 
