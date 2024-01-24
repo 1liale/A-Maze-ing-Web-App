@@ -22,7 +22,5 @@ func MazeGenerator(input *models.InputMazeBase) (*models.Maze, error) {
 		algos.RandKruskal(m)
 	}
 
-	// Display "perfect" maze
-	m.Display()
 	return m, nil
 }

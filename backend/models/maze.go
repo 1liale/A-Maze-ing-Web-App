@@ -8,12 +8,14 @@ import (
 // rand
 const SEED int64 = 42
 
-var rnd *rand.Rand = rand.New(rand.NewSource(SEED))
+var Rng *rand.Rand = rand.New(rand.NewSource(SEED))
 
 // setup constants for wall directions
 const (
 	U, D, L, R = 1, 2, 4, 8
 	CLOSED     = 15 // assume all walls are closed initially
+	IN         = 16
+	FRONTIER   = 32
 )
 
 // directional mapping for easier calc
@@ -51,16 +53,16 @@ type Maze struct {
 	N_Cells int
 	Start   *Cell
 	End     *Cell
-	Path    []*Cell
+	Path    MazeSolution
 	Cells   []Cell
-	History [][]Cell // to show generator progress over iterations, can visualize
+	History []*Cell // tracks change in cells
 }
 
 // pick start randomly on left wall and end randomly from right wall
 func (m *Maze) SetRandomEndpoints() {
 	w, h := m.Width, m.Height
-	r1 := rnd.Intn(h)
-	r2 := rnd.Intn(h)
+	r1 := Rng.Intn(h)
+	r2 := Rng.Intn(h)
 
 	m.End = m.GetCellFromCoord(r2, w-1)
 	m.Start = m.GetCellFromCoord(r1, 0)
@@ -136,7 +138,7 @@ func BuildEdges(m *Maze) []Edge {
 			edges[edge_ind] = Edge{
 				Src:    i,
 				Dest:   (r-1)*w + c,
-				Weight: rnd.Intn(h * w),
+				Weight: Rng.Intn(h * w),
 			}
 			edge_ind++
 		}
@@ -144,7 +146,7 @@ func BuildEdges(m *Maze) []Edge {
 			edges[edge_ind] = Edge{
 				Src:    i,
 				Dest:   r*w + c - 1,
-				Weight: rnd.Intn(h * w),
+				Weight: Rng.Intn(h * w),
 			}
 			edge_ind++
 		}
@@ -154,6 +156,15 @@ func BuildEdges(m *Maze) []Edge {
 
 // display the maze inside the console
 func (m *Maze) Display() {
+	// update cell display states
+	if m.Path != nil { //  TODO: refactor when time allows (not the best practice to put here)
+		for _, pos := range m.Path {
+			if pos != m.Start.Pos && pos != m.End.Pos {
+				m.Cells[pos].State = "*"
+			}
+		}
+	}
+
 	for c := 0; c < m.Width; c++ {
 		fmt.Print("+---")
 	}
@@ -162,10 +173,17 @@ func (m *Maze) Display() {
 		fmt.Print("+")
 		for c := 0; c < m.Width; c++ {
 			cell := m.GetCellFromCoord(r, c)
-			if cell.Wall&R == 0 {
-				fmt.Printf(" %v +", cell.State)
+
+			if cell.State != "." {
+				fmt.Printf(" \033[1;34m%v\033[0m ", cell.State)
 			} else {
-				fmt.Printf(" %v  ", cell.State)
+				fmt.Printf(" %v ", cell.State)
+			}
+
+			if cell.Wall&R == 0 {
+				fmt.Printf("+")
+			} else {
+				fmt.Printf(" ")
 			}
 		}
 		fmt.Println()

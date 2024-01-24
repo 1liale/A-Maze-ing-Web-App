@@ -8,7 +8,7 @@ import (
 
 type User struct {
 	ID               uuid.UUID `gorm:"PRIMARY_KEY"`
-	Name             string
+	Name             string    `gorm:"unique"`
 	FastestSolveTime int
 	Records          []MazeRecord
 }

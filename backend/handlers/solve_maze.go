@@ -18,8 +18,9 @@ func SolveMaze(ctx *gin.Context) {
 		ctx.Error(err)
 		return
 	}
+	m.Display()
 
-	data, solution := models.ExtractMazeOutputData(m), models.ExtractMazeOutputSoln(m)
+	data, solution := models.ExtractMazeOutputData(m), m.Path
 
 	output := models.MazeOutput{
 		Data:     data,

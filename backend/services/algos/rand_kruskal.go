@@ -7,7 +7,6 @@ import (
 )
 
 func RandKruskal(m *models.Maze) {
-	n_cells := m.Height * m.Width
 
 	// build and sort edges by weight in ASC order
 	edges := models.BuildEdges(m)
@@ -16,14 +15,12 @@ func RandKruskal(m *models.Maze) {
 	})
 
 	// initialize subsets, each cell has its own set initially
-	subsets := make([]Subset, n_cells)
+	subsets := make([]Subset, m.N_Cells)
 	for i := range subsets {
 		subsets[i].Parent = i
 		subsets[i].Rank = 0
 	}
 
-	newCells := append([]models.Cell{}, m.Cells...)
-	m.History = append(m.History, newCells)
 	for _, edge := range edges {
 		src, dest := edge.Src, edge.Dest
 		root1 := Find(subsets, src)
@@ -39,8 +36,8 @@ func RandKruskal(m *models.Maze) {
 			Union(subsets, root1, root2)
 			m.Cells[src].Wall |= dir
 			m.Cells[dest].Wall |= models.Opp[dir]
-			newCells = append([]models.Cell{}, m.Cells...)
-			m.History = append(m.History, newCells)
+			m.History = append(m.History, &m.Cells[src])
+			m.History = append(m.History, &m.Cells[dest])
 		}
 	}
 }
