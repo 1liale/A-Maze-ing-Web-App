@@ -29,11 +29,12 @@ func InitDB() *gorm.DB {
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
-		logrus.Fatal(err)
+		logrus.Warn("Cannot connect to: ", dsn)
+		logrus.Info("Proceeding without db connection!")
+	} else {
+		logrus.Info("Successfully connected to: ", dsn)
+		db.AutoMigrate(&models.User{}, &models.MazeRecord{})
 	}
-	logrus.Info("Successfully connected to: ", dsn)
-
-	db.AutoMigrate(&models.User{}, &models.MazeRecord{})
 
 	return db
 }
