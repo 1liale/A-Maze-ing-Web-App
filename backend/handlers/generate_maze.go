@@ -28,8 +28,9 @@ func GenerateMaze(ctx *gin.Context) {
 		ctx.Error(err)
 		return
 	}
-	solution := models.ExtractMazeOutputSoln(m)
+	solution := m.Path
 
+	m.Display()
 	output := models.MazeOutput{
 		Data:     data,
 		Solution: solution,

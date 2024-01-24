@@ -8,8 +8,8 @@ type MazeData struct {
 type MazeSolution []int
 
 type InputMazeBase struct {
-	Width  int `json:"width" binding:"required,gte=2,lte=10"`
-	Height int `json:"height" binding:"required,gte=2,lte=10"`
+	Width  int `json:"width" binding:"required,gte=3,lte=35"`
+	Height int `json:"height" binding:"required,gte=3,lte=35"`
 	Algorithms
 }
 
@@ -21,13 +21,12 @@ type InputMazeSolve struct {
 
 type MazeOutputData struct {
 	Maze    MazeData `json:"maze" binding:"required"`
-	History [][]int  `json:"history" binding:"required"`
+	History [][2]int `json:"history" binding:"required"`
 }
 
-type MazeOutputSolution MazeSolution
 type MazeOutput struct {
-	Data     MazeOutputData     `json:"data" binding:"required"`
-	Solution MazeOutputSolution `json:"solution" binding:"required"`
+	Data     MazeOutputData `json:"data" binding:"required"`
+	Solution MazeSolution   `json:"solution" binding:"required"`
 }
 
 // extract output data
@@ -38,25 +37,14 @@ func ExtractMazeOutputData(m *Maze) MazeOutputData {
 			End:   m.End.Pos,
 			Grid:  make([]int, m.N_Cells),
 		},
-		History: make([][]int, len(m.History)),
+		History: make([][2]int, len(m.History)),
 	}
 	for i, cell := range m.Cells {
 		output.Maze.Grid[i] = cell.Wall
 	}
-	for i := range m.History {
-		tmp := make([]int, m.N_Cells)
-		for j, cell := range m.History[i] {
-			tmp[j] = cell.Wall
-		}
-		output.History[i] = tmp
+	for i, cell := range m.History {
+		output.History[i][0] = cell.Pos
+		output.History[i][1] = cell.Wall
 	}
 	return output
-}
-
-func ExtractMazeOutputSoln(m *Maze) MazeOutputSolution {
-	solution := make(MazeOutputSolution, len(m.Path))
-	for i, cell := range m.Path {
-		solution[i] = cell.Pos
-	}
-	return solution
 }
