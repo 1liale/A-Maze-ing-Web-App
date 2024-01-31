@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"net/http"
+
 	"github.com/1liale/maze-backend/models"
 	"github.com/1liale/maze-backend/services"
 	"github.com/gin-gonic/gin"
@@ -27,5 +29,5 @@ func SolveMaze(ctx *gin.Context) {
 		Solution: solution,
 	}
 
-	ctx.JSON(200, gin.H{"response": output})
+	ctx.JSON(http.StatusOK, gin.H{"response": output})
 }

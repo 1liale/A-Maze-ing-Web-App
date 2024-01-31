@@ -52,7 +52,7 @@ func main() {
 	// To store custom types in our cookies,
 	// we must first register them using gob.Register
 	gob.Register(map[string]interface{}{})
-	store := cookie.NewStore([]byte("secret"))
+	store := cookie.NewStore([]byte(os.Getenv("SESSION_SECRET")))
 
 	// middlewares
 	router.Use(
@@ -61,7 +61,7 @@ func main() {
 		middlewares.ErrorHandler(),
 		middlewares.PropDBEnv(db),
 		cors.Default(), // enable CORS for all origins with all HTTP requests allowed by default
-		sessions.Sessions("auth-session", store),
+		sessions.Sessions("maze-session", store),
 	)
 
 	authenticator, err := models.NewAuth()
@@ -80,8 +80,8 @@ func main() {
 
 	// special routes (auth, system checks, etc.)
 	router.GET("/login", handlers.Login(authenticator))
-	router.GET("/callback", handlers.Callback(authenticator))
 	router.GET("/logout", handlers.Logout)
+	router.GET("/callback", handlers.Callback(authenticator))
 	router.GET("/api-health", handlers.SystemCheck)
 
 	// require auth for requests that modify DB
@@ -89,18 +89,8 @@ func main() {
 	{
 		// create maze record for user (update if user exists already)
 		auth.PUT("/maze/:user", handlers.SaveMaze)
-
-		// delete user and their records
-		auth.DELETE("/maze/:user", handlers.DeleteMaze)
-
-		auth.GET("/products", func(c *gin.Context) {
-			products := []Product{
-				{ID: 1, Title: "Product 1", Code: "p1", Price: 100.0},
-				{ID: 2, Title: "Product 2", Code: "p2", Price: 200.0},
-				{ID: 3, Title: "Product 3", Code: "p3", Price: 300.0},
-			}
-			c.JSON(http.StatusOK, products)
-		})
+		// delete a user's maze records
+		auth.DELETE("/maze/:user", handlers.DeleteMazes)
 	}
 
 	// get records belonging to user
