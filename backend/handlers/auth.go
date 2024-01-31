@@ -10,7 +10,6 @@ import (
 	"github.com/1liale/maze-backend/models"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 )
 
 func generateRandomState() (string, error) {
@@ -42,7 +41,6 @@ func Login(auth *models.Authenticator) gin.HandlerFunc {
 			return
 		}
 
-		logrus.Info(state)
 		ctx.Redirect(http.StatusTemporaryRedirect, auth.AuthCodeURL(state))
 	}
 }
@@ -82,8 +80,7 @@ func Callback(auth *models.Authenticator) gin.HandlerFunc {
 		}
 
 		// Redirect to logged in page.
-		logrus.Info("TEST")
-		ctx.Redirect(http.StatusTemporaryRedirect, "/products")
+		ctx.JSON(http.StatusOK, gin.H{"jwt": token.AccessToken, "profile": profile})
 	}
 }
 

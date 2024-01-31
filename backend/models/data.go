@@ -19,6 +19,16 @@ type InputMazeSolve struct {
 	Solution MazeSolution `json:"solution" binding:"required"`
 }
 
+type InputMazeSave struct {
+	Maze      MazeData     `json:"maze" binding:"required"`
+	Solution  MazeSolution `json:"solution" binding:"required"`
+	SolveTime int          `json:"solve_time" binding:"required"`
+}
+
+type InputMazeDelete struct {
+	MazeIDs []string `json:"maze_ids"`
+}
+
 type MazeOutputData struct {
 	Maze    MazeData `json:"maze" binding:"required"`
 	History [][2]int `json:"history" binding:"required"`
