@@ -1,20 +1,24 @@
 # syntax=docker/dockerfile:1
 # node project multistage build
 
-FROM node:lts-alpine as build
+FROM node:lts-alpine AS build
+
 WORKDIR /app
-COPY package*.json yarn.lock ./
+
+COPY package.json .
+COPY yarn.lock .
+
 RUN yarn install --frozen-lockfile
 COPY . .
 RUN yarn build
 
-FROM node:lts-alpine AS prod
+FROM node:lts-alpine
 
-# copy only the necessary files
-COPY --from=build /app/build ./build
-COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/package*.json /app/yarn.lock ./
+WORKDIR /app
+
+COPY --from=build /app .
+COPY . .
 
 EXPOSE 5173
 
-CMD ["yarn", "dev"]
+CMD ["yarn", "start"]
