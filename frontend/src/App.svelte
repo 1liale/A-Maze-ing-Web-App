@@ -1,8 +1,10 @@
 <script lang="ts">
   import { Auth0Context, userInfo } from '@dopry/svelte-auth0';
-  import { AppBar, AppShell, LightSwitch } from '@skeletonlabs/skeleton';
+  import { arrow, autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom';
+  import { AppBar, AppShell, LightSwitch, storePopup } from '@skeletonlabs/skeleton';
   import Title from './components/Title.svelte';
   import UserAction from './components/UserAction.svelte';
+  storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 
   const DOMAIN = import.meta.env.VITE_AUTH0_DOMAIN;
   const CLIENT_ID = import.meta.env.VITE_AUTH0_CLIENT_ID;
