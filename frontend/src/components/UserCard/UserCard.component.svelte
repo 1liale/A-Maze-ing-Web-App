@@ -6,7 +6,7 @@
 
   export let profile: UserCardProfile;
 
-  const apiUrl = 'http://localhost:8080/api-health';
+  const apiUrl = 'http://localhost:8080/test';
   const requestAPI = async () => {
     try {
       console.log('trying auth', $authToken);

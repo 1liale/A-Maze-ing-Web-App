@@ -47,6 +47,8 @@ func main() {
 		cors.New(conf.CorsOptions),
 	)
 
+	router.GET("/api-health", handlers.SystemCheck)
+
 	// require auth for requests that modify DB
 	auth := router.Group("/").Use(middlewares.CheckJWT(conf.Audience, conf.Domain))
 	{
@@ -55,7 +57,7 @@ func main() {
 		// delete a user's maze records
 		auth.DELETE("/maze/:user", handlers.DeleteMazes)
 
-		auth.GET("/api-health", handlers.SystemCheck)
+		router.GET("/test", handlers.SystemCheck)
 	}
 
 	// get records belonging to user

@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/gin-gonic/contrib/secure"
@@ -55,8 +54,6 @@ func InitConfig() *Config {
 		Audience:      audience,
 		Domain:        domain,
 	}
-
-	fmt.Printf("%+v\n\n", config)
 
 	return &config
 }
