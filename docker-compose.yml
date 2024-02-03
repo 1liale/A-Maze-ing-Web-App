@@ -8,25 +8,6 @@ volumes:
     name: db-data
 
 services:
-  go-server:
-    container_name: backend
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    restart: on-failure
-    ports:
-      - 8080:8080
-    env_file:
-      - .env
-    healthcheck:
-      test: curl -f http://localhost:8080/api-health || exit 1
-      interval: 15s
-      timeout: 3s
-      retries: 3
-    depends_on:
-      postgres-db:
-        condition: service_healthy
-
   svelte-client:
     container_name: frontend
     build: 
@@ -36,13 +17,32 @@ services:
     ports: 
       - 5173:5173
     env_file:
-      - .env
+      - ./frontend/.env
     depends_on:
       go-server:
         condition: service_healthy
       postgres-db:
         condition: service_healthy
-  
+
+  go-server:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: on-failure
+    ports:
+      - 8080:8080
+    env_file:
+      - ./backend/.env
+    healthcheck:
+      test: curl -f http://localhost:8080/api-health || exit 1
+      interval: 15s
+      timeout: 3s
+      retries: 3
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+
   postgres-db:
     container_name: database
     image: postgres:latest

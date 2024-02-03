@@ -1,8 +1,10 @@
 <script lang="ts">
   import { Auth0LoginButton, isAuthenticated, userInfo } from '@dopry/svelte-auth0';
   import { Avatar, popup, type PopupSettings } from '@skeletonlabs/skeleton';
-  import type { User, UserCardProfile } from '../../types/user.types';
-  import UserCard from '../UserCard/UserCard.component.svelte';
+
+  import type { User } from '@auth0/auth0-spa-js';
+  import UserCard from '@Components/UserCard/UserCard.component.svelte';
+  import type { UserCardProfile } from '@Types/user.types';
 
   const popupFeatured: PopupSettings = {
     event: 'click',
