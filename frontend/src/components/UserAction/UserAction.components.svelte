@@ -1,8 +1,8 @@
 <script lang="ts">
   import { Auth0LoginButton, isAuthenticated, userInfo } from '@dopry/svelte-auth0';
   import { Avatar, popup, type PopupSettings } from '@skeletonlabs/skeleton';
-  import UserCard from './UserCard.svelte';
-  import type { User, UserCardProfile } from './user.types.ts';
+  import type { User, UserCardProfile } from '../../types/user.types';
+  import UserCard from '../UserCard/UserCard.component.svelte';
 
   const popupFeatured: PopupSettings = {
     event: 'click',
@@ -19,8 +19,6 @@
     profile.email = value.email;
     profile.picture = value.picture;
   });
-
-  // isAuthenticated.subscribe(() => )
 </script>
 
 {#if !$isAuthenticated}
