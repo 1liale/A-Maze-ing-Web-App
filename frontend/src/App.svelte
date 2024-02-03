@@ -1,4 +1,6 @@
 <script lang="ts">
+  import Title from '@components/Title/Title.component.svelte';
+  import UserAction from '@components/UserAction/UserAction.components.svelte';
   import { Auth0Context } from '@dopry/svelte-auth0';
   import { arrow, autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom';
   import {
@@ -10,8 +12,6 @@
     storePopup,
   } from '@skeletonlabs/skeleton';
   import { onMount } from 'svelte';
-  import Title from './components/Title/Title.component.svelte';
-  import UserAction from './components/UserAction/UserAction.components.svelte';
   storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 
   const DOMAIN = import.meta.env.VITE_AUTH0_DOMAIN;

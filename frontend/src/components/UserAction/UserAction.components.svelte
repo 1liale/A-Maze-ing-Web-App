@@ -3,8 +3,8 @@
   import { Avatar, popup, type PopupSettings } from '@skeletonlabs/skeleton';
 
   import type { User } from '@auth0/auth0-spa-js';
-  import UserCard from '@Components/UserCard/UserCard.component.svelte';
-  import type { UserCardProfile } from '@Types/user.types';
+  import UserCard from '@components/UserCard/UserCard.component.svelte';
+  import type { UserCardProfile } from 'types/user.types';
 
   const popupFeatured: PopupSettings = {
     event: 'click',

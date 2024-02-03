@@ -119,12 +119,12 @@ e.g generate a 20x20 maze with prim and solve using bfs
 3. Configure & integrate containers following a microservices architecture (Orchestrate locally with Docker Compose)
 4. Demonstrate understanding of key Golang concepts by generating and solving mazes (i.e. api setup, concurrency with goroutines + wait groups + channels, etc. )
 5. Achieve seamless integration between frontend UI views and backend services.
-6. Cloud Deployment with AWS
-7. Leverage IaC with Terraform to declaratively provision Cloud resources
+6. Cloud deployment with AWS
+7. Leverage IaC with Terraform to declaratively provision cloud resources
 8. Use Packer to bake custom AMIs
 
 ## Limitations:
 
 1. Generate and solve "perfect" mazes (MSTs with only one path from entry to exit)
-2. Crud frontend (focus of this project is on devops and go backend configurations)
+2. Simple frontend - a working solution is sufficient
 3. Limited use of concurrency (can go into a lot more depth but sufficient for the demonstrative purposes of this application)

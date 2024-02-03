@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { UserCardProfile } from '@Types/user.types';
+  import type { UserCardProfile } from 'types/user.types';
 
   import { Auth0LogoutButton, authToken } from '@dopry/svelte-auth0';
   import { Avatar } from '@skeletonlabs/skeleton';

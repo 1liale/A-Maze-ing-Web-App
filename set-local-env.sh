@@ -9,4 +9,4 @@ for folder in "${folders[@]}"; do
   cp "$folder/.env.local" "$folder/.env"
 done
 
-echo "Copied .env.local to .env in $folders"
+echo "Copied .env.local to .env in ${folders[@]}"
