@@ -16,4 +16,5 @@ export type UserCardProfile = {
   name?: string;
   email?: string;
   bio?: string;
+  initials?: string;
 };

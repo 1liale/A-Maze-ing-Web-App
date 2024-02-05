@@ -20,21 +20,19 @@
     profile.name = value.name;
     profile.email = value.email;
     profile.picture = value.picture;
+    profile.initials = (value.given_name || ' ')[0] + (value?.family_name || ' ')[0];
   });
 </script>
 
 {#if !$isAuthenticated}
-  <Auth0LoginButton
-    class="btn border-2 hover:border-primary-400/30 border-transparent rounded variant-soft"
-    >Login
-  </Auth0LoginButton>
+  <Auth0LoginButton class="soft-action-button">Login</Auth0LoginButton>
 {:else}
   <button use:popup={popupFeatured}>
     <Avatar
       border="border-2 border-surface-300-600-token hover:!border-primary-500/70"
       width="w-12"
-      src={$userInfo.picture}
-      initials="AL"
+      src={profile.picture}
+      initials={profile.initials}
     />
   </button>
   <div data-popup="popupFeatured">

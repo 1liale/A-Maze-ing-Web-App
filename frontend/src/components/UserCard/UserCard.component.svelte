@@ -43,10 +43,7 @@
       <p>{profile.bio}</p>
     {/if}
     <button on:click={requestAPI}>Call API</button>
-    <Auth0LogoutButton
-      class="btn w-full border-2 hover:border-primary-400/30 border-transparent rounded variant-soft"
-      >Logout</Auth0LogoutButton
-    >
+    <Auth0LogoutButton class="soft-action-button w-full">Logout</Auth0LogoutButton>
   </div>
   <div class="arrow bg-surface-100-800-token" />
 </div>

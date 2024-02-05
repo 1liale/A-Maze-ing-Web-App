@@ -17,6 +17,8 @@
     "@skeletonlabs/skeleton": "^2.8.0",
     "@skeletonlabs/tw-plugin": "^0.3.1",
     "@sveltejs/vite-plugin-svelte": "^3.0.1",
+    "@threlte/core": "^7.0.12",
+    "@threlte/extras": "^8.5.1",
     "axios": "^1.6.7",
     "svelte": "^4.2.8",
     "three": "^0.161.0"
@@ -25,7 +27,7 @@
     "@dopry/svelte-auth0": "^2.0.0",
     "@tsconfig/svelte": "^5.0.2",
     "@types/node": "^20.11.16",
-    "@types/three": "^0.161.1",
+    "@types/three": "^0.161.2",
     "autoprefixer": "^10.4.17",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
