@@ -1,10 +1,12 @@
 <script lang="ts">
   import ReturnButton from '@components/Buttons/ReturnButton.component.svelte';
   import Timer from '@components/Timer/Timer.component.svelte';
-  import { sidebarState as state } from '@stores/store';
+  import { generateMaze } from '@services/maze.service';
+  import { mazeInput } from '@stores/data';
+  import { sidebarState as state } from '@stores/state';
 
-  const callGenerateMaze = () => {
-    state.set('generate');
+  const callGenerateMaze = async () => {
+    await generateMaze($mazeInput).then(() => state.set('generate'));
   };
 
   const callSolveMaze = () => {
@@ -13,13 +15,6 @@
 
   const resetState = () => {
     state.set('init');
-  };
-
-  const maze_input: any = {
-    width: 3,
-    height: 3,
-    generator: 'prim',
-    solver: 'dfs',
   };
 
   const generators = ['prim', 'kruskal'];
@@ -31,23 +26,31 @@
     <div class="h-full flex flex-col justify-end gap-4">
       <div id="base-input-group" class="flex flex-col gap-3">
         <span class="flex gap-6"
-          >Width: <input type="range" bind:value={maze_input.width} min="3" max="35" />
-          {maze_input.width}px</span
+          >Width: <input type="range" bind:value={$mazeInput.width} min="3" max="35" />
+          {$mazeInput.width}px</span
         >
         <span class="flex gap-6"
-          >Height: <input type="range" bind:value={maze_input.height} min="3" max="35" />
-          {maze_input.height}px</span
+          >Height: <input type="range" bind:value={$mazeInput.height} min="3" max="35" />
+          {$mazeInput.height}px</span
         >
         <span class="flex gap-6"
           >Generator:
-          <select id="generator-select" class="select h-10" bind:value={maze_input.generator}>
+          <select
+            id="generator-select"
+            class="select leading-tight p-1"
+            bind:value={$mazeInput.generator}
+          >
             <option>{generators[0]}</option>
             <option>{generators[1]}</option>
           </select>
         </span>
-        <span class="flex gap-6"
-          >Solver:
-          <select id="solver-select" class="select h-10" bind:value={maze_input.solver}>
+        <span class="flex gap-6">
+          Solver:
+          <select
+            id="solver-select"
+            class="select leading-tight p-1"
+            bind:value={$mazeInput.solver}
+          >
             <option>{solvers[0]}</option>
             <option>{solvers[1]}</option>
             <option>{solvers[2]}</option>

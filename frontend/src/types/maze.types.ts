@@ -1,6 +1,5 @@
 export interface MazeConfig {
   materials?: { [key: string]: any };
-  renderer?: WebGL2RenderingContext;
   thickness?: number;
 }
 
@@ -12,9 +11,19 @@ export interface MazeData {
   height: number;
 }
 
+export interface MazeMeta {
+  solution: number[];
+  history: number[][];
+}
+
 export interface MazeInput {
   width: number;
   height: number;
   generator: 'prim' | 'kruskal';
   solver: 'bfs' | 'bbfs' | 'dfs';
+}
+
+export interface MazeScore {
+  name: string;
+  time: number;
 }

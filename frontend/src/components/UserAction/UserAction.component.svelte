@@ -15,7 +15,7 @@
   const profile: UserCardProfile = {};
 
   userInfo.subscribe((value: User) => {
-    if (!value) return;
+    if (Object.keys(value).length === 0) return;
     console.log(value);
     profile.name = value.name;
     profile.email = value.email;

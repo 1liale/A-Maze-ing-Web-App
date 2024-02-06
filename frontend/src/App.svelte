@@ -1,8 +1,9 @@
 <script lang="ts">
-  import GameSideBar from '@components/GameSideBar/GameSideBar.component.svelte';
-  import GameWindow from '@components/GameWindow/GameWindow.component.svelte';
   import GradientHeading from '@components/GradientHeading/GradientHeading.component.svelte';
-  import UserAction from '@components/UserAction/UserAction.components.svelte';
+  import GameWindow from './layouts/GameWindow/GameWindow.component.svelte';
+  import SideBar from './layouts/SideBar/SideBar.component.svelte';
+
+  import UserAction from '@components/UserAction/UserAction.component.svelte';
   import { Auth0Context } from '@dopry/svelte-auth0';
   import { arrow, autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom';
   import {
@@ -38,18 +39,8 @@
         <GradientHeading className="h3">A-Maze-ing: Try some Mazes!</GradientHeading>
         <UserAction slot="trail">(actions)</UserAction>
       </AppBar>
-      <GameSideBar slot="sidebarLeft" />
-      <div class="h-full flex flex-col">
-        <GameWindow className="h-5/6" config={undefined} data={undefined} />
-        <div class="flex-1 p-3">
-          <div class="h-full variant-ghost rounded-lg p-3">
-            <p class="dark:text-primary-500/70 text-surface-500/70">
-              <strong>Instructions: </strong>Use 'wasd' or arrow keys to move and mouse to control
-              the view rotations.
-            </p>
-          </div>
-        </div>
-      </div>
+      <SideBar slot="sidebarLeft" />
+      <GameWindow config={undefined} data={undefined} />
     </AppShell>
   </main>
 </Auth0Context>
