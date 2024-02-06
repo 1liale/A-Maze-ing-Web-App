@@ -19,6 +19,7 @@
 
   const generators = ['prim', 'kruskal'];
   const solvers = ['bfs', 'bbfs', 'dfs'];
+  const sliderRange = { min: 3, max: 15 };
 </script>
 
 <div class="container h-full py-3">
@@ -26,11 +27,21 @@
     <div class="h-full flex flex-col justify-end gap-4">
       <div id="base-input-group" class="flex flex-col gap-3">
         <span class="flex gap-6"
-          >Width: <input type="range" bind:value={$mazeInput.width} min="3" max="35" />
+          >Width: <input
+            type="range"
+            bind:value={$mazeInput.width}
+            min={sliderRange.min}
+            max={sliderRange.max}
+          />
           {$mazeInput.width}px</span
         >
         <span class="flex gap-6"
-          >Height: <input type="range" bind:value={$mazeInput.height} min="3" max="35" />
+          >Height: <input
+            type="range"
+            bind:value={$mazeInput.height}
+            min={sliderRange.min}
+            max={sliderRange.max}
+          />
           {$mazeInput.height}px</span
         >
         <span class="flex gap-6"

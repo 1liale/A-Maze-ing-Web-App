@@ -40,7 +40,7 @@
         <UserAction slot="trail">(actions)</UserAction>
       </AppBar>
       <SideBar slot="sidebarLeft" />
-      <GameWindow config={undefined} data={undefined} />
+      <GameWindow />
     </AppShell>
   </main>
 </Auth0Context>

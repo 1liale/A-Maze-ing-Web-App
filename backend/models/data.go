@@ -8,8 +8,8 @@ type MazeData struct {
 type MazeSolution []int
 
 type InputMazeBase struct {
-	Width  int `json:"width" binding:"required,gte=3,lte=35"`
-	Height int `json:"height" binding:"required,gte=3,lte=35"`
+	Width  int `json:"width" binding:"required,gte=3,lte=30"`
+	Height int `json:"height" binding:"required,gte=3,lte=30"`
 	Algorithms
 }
 
