@@ -1,3 +1,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.gradient-heading {
+    @apply bg-clip-text text-transparent box-decoration-clone;
+    /* Direction */
+    @apply bg-gradient-to-br;
+    /* Color Stops */
+    @apply dark:from-red-500 dark:to-yellow-500 from-surface-900 to-primary-500;
+}
+
+.action-button {
+    @apply btn border-2 border-surface-400/50 rounded variant-soft
+}
+
+.action-button:hover {
+    @apply border-primary-400/30
+}
+
+.soft-action-button {
+    @apply btn border-2 border-transparent rounded variant-soft
+}
+
+.soft-action-button:hover {
+    @apply border-primary-400/30
+}

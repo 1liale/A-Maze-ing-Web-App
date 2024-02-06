@@ -1,6 +1,9 @@
 <script lang="ts">
-  import Title from '@components/Title/Title.component.svelte';
-  import UserAction from '@components/UserAction/UserAction.components.svelte';
+  import GradientHeading from '@components/GradientHeading/GradientHeading.component.svelte';
+  import GameWindow from './layouts/GameWindow/GameWindow.component.svelte';
+  import SideBar from './layouts/SideBar/SideBar.component.svelte';
+
+  import UserAction from '@components/UserAction/UserAction.component.svelte';
   import { Auth0Context } from '@dopry/svelte-auth0';
   import { arrow, autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom';
   import {
@@ -32,12 +35,12 @@
         slotDefault="place-self-center"
         slotTrail="place-content-end"
       >
-        <div class="h-full dark:bg-primary-400 p-1" slot="lead"><LightSwitch /></div>
-        <span class="flex gap-2 items-center">
-          <Title className="h3">A-Maze-ing: Try some Mazes</Title>😎
-        </span>
+        <div class="h-full dark:bg-primary-500/80 p-1" slot="lead"><LightSwitch /></div>
+        <GradientHeading className="h3">A-Maze-ing: Try some Mazes!</GradientHeading>
         <UserAction slot="trail">(actions)</UserAction>
       </AppBar>
+      <SideBar slot="sidebarLeft" />
+      <GameWindow />
     </AppShell>
   </main>
 </Auth0Context>
