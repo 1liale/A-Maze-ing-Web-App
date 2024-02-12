@@ -25,7 +25,7 @@
 </script>
 
 {#if !$isAuthenticated}
-  <Auth0LoginButton class="soft-action-button">Login</Auth0LoginButton>
+  <Auth0LoginButton preserveRoute class="soft-action-button">Login</Auth0LoginButton>
 {:else}
   <button use:popup={popupFeatured}>
     <Avatar

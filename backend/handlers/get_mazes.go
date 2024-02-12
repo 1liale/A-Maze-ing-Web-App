@@ -28,7 +28,7 @@ func GetMazes(ctx *gin.Context) {
 
 	// Retrieve the top 5 records sorted by SolveTime
 	var maze_records []models.MazeRecord
-	db.Where("user_id = ?", userID).Order("solve_time").Find(&maze_records)
+	db.Preload("Records").Where("user_id = ?", userID).Order("solve_time").Find(&maze_records)
 
 	ctx.JSON(http.StatusOK, gin.H{"response": maze_records})
 }

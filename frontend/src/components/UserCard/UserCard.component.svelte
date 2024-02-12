@@ -1,27 +1,10 @@
 <script lang="ts">
   import type { UserCardProfile } from 'types/user.types';
 
-  import { Auth0LogoutButton, authToken } from '@dopry/svelte-auth0';
+  import { Auth0LogoutButton } from '@dopry/svelte-auth0';
   import { Avatar } from '@skeletonlabs/skeleton';
-  import axios from 'axios';
 
   export let profile: UserCardProfile;
-
-  const apiUrl = 'http://localhost:8080/test';
-  const requestAPI = async () => {
-    try {
-      console.log('trying auth', $authToken);
-      const response = await axios.get(apiUrl, {
-        headers: {
-          Authorization: `Bearer ${$authToken}`,
-        },
-      });
-
-      console.log('API Response:', response.data);
-    } catch (error) {
-      console.error('Error making API request:', error);
-    }
-  };
 </script>
 
 <div class="card border border-white/30 m-4 p-4 w-72 shadow-xl">
@@ -42,7 +25,6 @@
     {#if profile.bio}
       <p>{profile.bio}</p>
     {/if}
-    <button on:click={requestAPI}>Call API</button>
     <Auth0LogoutButton class="soft-action-button w-full">Logout</Auth0LogoutButton>
   </div>
   <div class="arrow bg-surface-100-800-token" />

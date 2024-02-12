@@ -53,18 +53,16 @@ func main() {
 	auth := router.Group("/").Use(middlewares.CheckJWT(conf.Audience, conf.Domain))
 	{
 		// create maze record for user (update if user exists already)
-		auth.PUT("/maze/:user", handlers.SaveMaze)
+		router.PUT("/maze/:user", handlers.SaveMaze)
 		// delete a user's maze records
 		auth.DELETE("/maze/:user", handlers.DeleteMazes)
-
-		router.GET("/test", handlers.SystemCheck)
 	}
 
 	// get records belonging to user
 	router.GET("/maze/:user", handlers.GetMazes)
 
-	// list number of maze records specified by the user or what's available, empty otherwise
-	router.GET("/maze", handlers.ListMazes)
+	// list the top number of users by fastest solve time
+	router.GET("/maze/scoreboard", handlers.GetScoreboard)
 
 	// generate a new maze and corresponding solution with given user-specified dimensions
 	router.POST("/maze/generate", handlers.GenerateMaze)

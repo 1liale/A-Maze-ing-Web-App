@@ -49,7 +49,9 @@ func SaveMaze(ctx *gin.Context) {
 
 	// create new maze record associated with user
 	maze_record := models.MazeRecord{
+		ID:        uuid.New(),
 		UserId:    userID,
+		UserName:  user.Name,
 		Data:      maze_input.Maze,
 		Solution:  maze_input.Solution,
 		SolveTime: maze_input.SolveTime,

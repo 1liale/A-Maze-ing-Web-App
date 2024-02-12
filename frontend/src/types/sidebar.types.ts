@@ -1,1 +1,1 @@
-export type SideBarState = 'init' | 'generate' | 'solve';
+export type SideBarState = 'init' | 'waiting' | 'setup' | 'started' | 'finished';
