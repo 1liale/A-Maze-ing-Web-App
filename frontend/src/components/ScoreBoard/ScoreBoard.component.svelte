@@ -1,7 +1,12 @@
 <script lang="ts">
   import GradientHeading from '@components/GradientHeading/GradientHeading.component.svelte';
-  import { Paginator, Table, tableMapperValues } from '@skeletonlabs/skeleton';
-  import { mazeScores } from '@stores/data';
+  import {
+    Paginator,
+    Table,
+    tableMapperValues,
+    type PaginationSettings,
+  } from '@skeletonlabs/skeleton';
+  import { mazeScores } from '@stores/data.stores';
 
   let paginationSettings: PaginationSettings = {
     page: 0,
@@ -31,7 +36,6 @@
       select="leading-tight variant-ringed h-8 rounded p-1"
       controlVariant="variant-ringed h-8 rounded"
       justify="justify-between"
-      active
       bind:settings={paginationSettings}
       showFirstLastButtons={false}
       showPreviousNextButtons={true}

@@ -3,6 +3,14 @@ export interface MazeConfig {
   thickness?: number;
 }
 
+export enum MazeStatus {
+  WALL,
+  EMPTY,
+  VISITED,
+  START,
+  END,
+}
+
 export interface MazeData {
   start: number;
   end: number;

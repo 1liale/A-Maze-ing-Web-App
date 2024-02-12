@@ -4,8 +4,10 @@
   import { modeCurrent } from '@skeletonlabs/skeleton';
 
   export let onClick: () => void | undefined;
+  export let disabled: boolean | undefined = undefined;
+  export let className: string = '';
 </script>
 
-<button on:click={onClick} class="action-button w-20">
+<button {disabled} on:click={onClick} class="action-button {className}">
   <img class="w-5 h-5" src={$modeCurrent ? arrowBackLight : arrowBackDark} alt="Return Button" />
 </button>

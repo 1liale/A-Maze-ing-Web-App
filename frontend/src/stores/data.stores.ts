@@ -1,3 +1,4 @@
+import { fromMazeToMapped } from '@services/display.service';
 import type { Readable } from 'svelte/motion';
 import { derived, writable, type Writable } from 'svelte/store';
 import type { MazeData, MazeInput, MazeMeta, MazeScore } from 'types/maze.types';
@@ -23,7 +24,8 @@ export const mazeData: Readable<MazeData | undefined> = derived(
         width: $mazeInput.width,
         height: $mazeInput.height,
       };
-      return data;
+
+      return fromMazeToMapped(data);
     }
     return undefined;
   },
@@ -53,3 +55,5 @@ const defaultMazeScores: MazeScore[] = [
   { name: 'Test', time: 5 },
 ];
 export const mazeScores: Writable<MazeScore[]> = writable(defaultMazeScores);
+
+export const solveTime: Writable<number> = writable(0);

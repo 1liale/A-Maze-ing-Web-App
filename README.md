@@ -130,3 +130,8 @@ e.g generate a 20x20 maze with prim and solve using bfs
 1. Generate and solve "perfect" mazes (MSTs with only one path from entry to exit)
 2. Simple frontend - a working solution is sufficient
 3. Limited use of concurrency (can go into a lot more depth but sufficient for the demonstrative purposes of this application)
+
+### Credits:
+
+(Rook model used in the Svelte application)
+This work is based on "Low Poly Chess - Rook" (https://sketchfab.com/3d-models/low-poly-chess-rook-cbd416e785f64648bff3675fd45b3594) by marcelo.medeirossilva (https://sketchfab.com/marcelo.medeirossilva) licensed under CC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)

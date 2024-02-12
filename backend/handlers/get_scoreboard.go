@@ -10,7 +10,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func ListMazes(ctx *gin.Context) {
+func GetScoreboard(ctx *gin.Context) {
 	dbCtx, exists := ctx.Get("db")
 	if !exists {
 		ctx.Error(fmt.Errorf("Error: DB object not found in ctx"))
@@ -25,9 +25,9 @@ func ListMazes(ctx *gin.Context) {
 		return
 	}
 
-	// Retrieve the top 5 records sorted by SolveTime
-	var maze_records []models.MazeRecord
-	db.Order("solve_time").Limit(limit).Find(&maze_records)
+	// Retrieve the top 5 users sorted by FastestSolveTime
+	var users []models.User
+	db.Order("fastest_solve_time").Limit(limit).Find(&users)
 
-	ctx.JSON(http.StatusOK, gin.H{"response": maze_records})
+	ctx.JSON(http.StatusOK, gin.H{"response": users})
 }

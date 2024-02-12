@@ -1,63 +1,37 @@
 <script lang="ts">
-  import { mazeData } from '@stores/data';
+  import { getMappedPosition } from '@services/display.service';
+  import { mazeData } from '@stores/data.stores';
+  import { sidebarState as state } from '@stores/state.stores';
   import { T } from '@threlte/core';
   import { OrbitControls } from '@threlte/extras';
-  import type { MazeData } from 'types/maze.types';
-  import Wall from './MazeObjects/Wall.component.svelte';
-  const checkIsPerim = (x: number, y: number, data: MazeData) => {
-    return (
-      x == 0 || y == 0 || y == 2 * data.width || x == 2 * data.height || (x % 2 == 0 && y % 2 == 0)
-    );
-  };
+  import { MazeStatus } from 'types/maze.types';
+  import Block from './MazeObjects/Block.component.svelte';
+  import Player from './MazeObjects/Player.component.svelte';
 
-  const checkIsPlaceWall = (x: number, y: number, data: MazeData) => {
-    // Cell position, do not place wall
-    if (x % 2 == 1 && y % 2 == 1) return false;
-    y = 2 * data.width - y;
-    x = (x - 1) / 2;
-    y = (y - 1) / 2;
-    const checkBelow = x % 1 != 0;
-    const checkRight = y % 1 != 0;
-    const ind = Math.floor(x) * data.width + Math.floor(y);
-    if (checkBelow && (data.grid[ind] & D) == 0) {
-      return true;
-    }
-
-    if (checkRight && (data.grid[ind] & R) == 0) {
-      return true;
-    }
-
-    return false;
-  };
-  const wallHeight = 0.2;
-
-  const U = 1,
-    D = 2,
-    L = 4,
-    R = 8;
-  const IN = 16;
-  const FRONTIER = 32;
+  const wallHeight = 0.25;
+  const pathHeight = 0.1;
 </script>
 
 <T.PerspectiveCamera makeDefault position={[20, 34, 0]}>
-  <OrbitControls enablePan={false} maxDistance={40} minDistance={10} maxPolarAngle={1.56} />
+  <OrbitControls enablePan={false} maxDistance={40} minDistance={8} maxPolarAngle={1.56} />
 </T.PerspectiveCamera>
 <T.DirectionalLight position={[3, 10, 7]} />
 <T.AmbientLight />
 {#if $mazeData}
-  {#each { length: 2 * $mazeData.height + 1 } as _, x}
-    {#each { length: 2 * $mazeData.width + 1 } as _, y}
-      {#if checkIsPerim(x, y, $mazeData)}
-        <Wall
-          height={wallHeight}
-          position={[x - $mazeData.height, wallHeight, y - $mazeData.width]}
-        />
-      {:else if checkIsPlaceWall(x, y, $mazeData)}
-        <Wall
-          height={wallHeight}
-          position={[x - $mazeData.width, wallHeight, y - $mazeData.height]}
-        />
-      {/if}
-    {/each}
+  {#each $mazeData.grid as item, index (index)}
+    {#if item === MazeStatus.WALL}
+      <Block height={wallHeight} position={getMappedPosition(index, wallHeight / 2, $mazeData)} />
+    {/if}
   {/each}
+  {#if $state === 'started' || $state === 'finished'}
+    <Block
+      color="#ff3e00"
+      height={pathHeight}
+      position={getMappedPosition($mazeData.end, pathHeight / 2, $mazeData)}
+    />
+    <Player
+      color="cyan"
+      initPosition={getMappedPosition($mazeData.start, 2 * pathHeight, $mazeData)}
+    />
+  {/if}
 {/if}

@@ -1,12 +1,13 @@
-import { apiData } from '@stores/data';
+import type { User } from '@auth0/auth0-spa-js';
+import { apiData } from '@stores/data.stores';
 import type { MazeInput } from 'types/maze.types';
 import { requestAPI } from './api.service';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-const getMazesList = async () => {};
+export const getMazesList = async () => {};
 
-const generateMaze = async (mazeInput: MazeInput) => {
+export const generateMaze = async (mazeInput: MazeInput) => {
   const options = {
     url: `${apiUrl}/maze/generate`,
     method: 'POST',
@@ -26,6 +27,21 @@ const generateMaze = async (mazeInput: MazeInput) => {
   }
 };
 
-const solveMaze = async () => {};
+export const saveMaze = async (authToken: string, userInfo: User) => {
+  const options = {
+    url: `${apiUrl}/maze/save/${userInfo.sub}`,
+    method: 'POST',
+    data: {},
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${authToken}`,
+    },
+  };
+  const { error } = await requestAPI(options);
 
-export { generateMaze, getMazesList, solveMaze };
+  if (error) {
+    console.error(error);
+  }
+};
+
+export const solveMaze = async () => {};

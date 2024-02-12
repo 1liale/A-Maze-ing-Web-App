@@ -4,6 +4,7 @@
   import { BoxGeometry } from 'three';
   export let position: number | [x: number, y: number, z: number] | undefined;
   export let height: number;
+  export let color: string | undefined = undefined;
   const thickness = 0.99;
 </script>
 
@@ -13,8 +14,8 @@
     <T.MeshBasicMaterial
       args={[
         {
-          color: $modeCurrent ? 'grey' : 'lightgrey',
-          opacity: 0.9,
+          color: color ? color : $modeCurrent ? 'grey' : 'lightgrey',
+          opacity: 0.75,
           transparent: true,
         },
       ]}
