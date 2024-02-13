@@ -6,7 +6,6 @@ import (
 
 	"github.com/1liale/maze-backend/models"
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -18,13 +17,7 @@ func DeleteMazes(ctx *gin.Context) {
 	}
 	db, _ := dbCtx.(*gorm.DB)
 
-	userIDStr := ctx.Param("user")
-	userID, err := uuid.Parse(userIDStr)
-	// should never have an invalid uuid for an auth user
-	if err != nil {
-		ctx.Error(fmt.Errorf("Invalid user ID"))
-		return
-	}
+	userID := ctx.Param("user")
 
 	// parse JSON body
 	var maze_input models.InputMazeDelete
@@ -46,5 +39,5 @@ func DeleteMazes(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"response": "SUCCESSFULLY DELETED MAZE RECORDS FOR USER: " + userIDStr})
+	ctx.JSON(http.StatusOK, gin.H{"response": "SUCCESSFULLY DELETED MAZE RECORDS FOR USER: " + userID})
 }

@@ -16,7 +16,6 @@
 
   userInfo.subscribe((value: User) => {
     if (Object.keys(value).length === 0) return;
-    console.log(value);
     profile.name = value.name;
     profile.email = value.email;
     profile.picture = value.picture;

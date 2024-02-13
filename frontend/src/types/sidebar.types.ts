@@ -1,1 +1,7 @@
-export type SideBarState = 'init' | 'waiting' | 'setup' | 'started' | 'finished';
+export enum SideBarState {
+  INIT,
+  WAITING,
+  SETUP,
+  STARTED,
+  FINISHED,
+}

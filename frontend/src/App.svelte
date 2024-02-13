@@ -1,20 +1,23 @@
 <script lang="ts">
   import GradientHeading from '@components/GradientHeading/GradientHeading.component.svelte';
-  import GameWindow from './layouts/GameWindow/GameWindow.component.svelte';
-  import SideBar from './layouts/SideBar/SideBar.component.svelte';
+  import GameWindow from './layouts/GameWindow/GameWindow.layout.svelte';
+  import SideBar from './layouts/SideBar/SideBar.layout.svelte';
 
   import UserAction from '@components/UserAction/UserAction.component.svelte';
-  import { Auth0Context, isAuthenticated } from '@dopry/svelte-auth0';
+  import { Auth0Context } from '@dopry/svelte-auth0';
   import { arrow, autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom';
   import {
     AppBar,
     AppShell,
     LightSwitch,
+    Toast,
+    initializeStores,
     modeCurrent,
     setModeCurrent,
     storePopup,
   } from '@skeletonlabs/skeleton';
   import { onMount } from 'svelte';
+  initializeStores();
   storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 
   const DOMAIN = import.meta.env.VITE_AUTH0_DOMAIN;
@@ -23,12 +26,6 @@
 
   onMount(() => {
     setModeCurrent($modeCurrent);
-    // TODO: check if auth token is set in localstorage and valid, if it is auto login (request USER profile from db)
-  });
-
-  isAuthenticated.subscribe((val: any) => {
-    if (!val) return;
-    console.log('AUTHENTICATED');
   });
 </script>
 
@@ -40,6 +37,7 @@
   audience={AUDIENCE}
 >
   <main style="display: contents" class="h-full overflow-hidden">
+    <Toast />
     <AppShell>
       <AppBar
         slot="header"

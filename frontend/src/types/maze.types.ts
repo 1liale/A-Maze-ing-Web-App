@@ -11,12 +11,21 @@ export enum MazeStatus {
   END,
 }
 
-export interface MazeData {
+export interface MazeData extends Maze {
   start: number;
   end: number;
+}
+
+export interface Maze {
   grid: number[];
   width: number;
   height: number;
+}
+
+export interface MazeSaveFormat {
+  maze: Maze;
+  solution: number[];
+  score: number;
 }
 
 export interface MazeMeta {
@@ -33,5 +42,5 @@ export interface MazeInput {
 
 export interface MazeScore {
   name: string;
-  time: number;
+  score: number;
 }

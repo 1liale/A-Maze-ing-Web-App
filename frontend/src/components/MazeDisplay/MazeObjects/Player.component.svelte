@@ -1,26 +1,31 @@
 <script lang="ts">
   import { getMappedPosition } from '@services/display.service';
   import { mazeData } from '@stores/data.stores';
-  import { playerState, sidebarState } from '@stores/state.stores';
-  import { onMount } from 'svelte';
+  import { playerState, sidebarState, solveTime } from '@stores/state.stores';
   import { MazeStatus } from 'types/maze.types';
   import type { Player } from 'types/player.types';
+  import { SideBarState } from 'types/sidebar.types';
   import Rook from './Rook.component.svelte';
 
   export let color: string | undefined;
   export let initPosition: [x: number, y: number, z: number] | undefined;
 
-  onMount(() => {
+  const resetState = () => {
     playerState.set({
       mappedPos: initPosition!,
       relPos: $mazeData!.start,
       moves: 0,
       hasWon: false,
     });
+    solveTime.set(0);
+  };
+
+  sidebarState.subscribe(state => {
+    if (state === SideBarState.STARTED) resetState();
   });
 
   const onKeyDown = async (e: KeyboardEvent) => {
-    if (!$mazeData || !$playerState || $sidebarState !== 'started') return;
+    if (!$mazeData || $sidebarState !== SideBarState.STARTED) return;
     let isActionTriggered = true;
     let delt_x = 0;
     let delt_y = 0;
@@ -68,7 +73,7 @@
         };
 
         playerState.set(newPlayerState);
-        if (newPlayerState.hasWon) $sidebarState = 'finished';
+        if (newPlayerState.hasWon) $sidebarState = SideBarState.FINISHED;
       }
     }
   };

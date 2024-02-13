@@ -20,9 +20,9 @@ type InputMazeSolve struct {
 }
 
 type InputMazeSave struct {
-	Maze      MazeData     `json:"maze" binding:"required"`
-	Solution  MazeSolution `json:"solution" binding:"required"`
-	SolveTime int          `json:"solve_time" binding:"required"`
+	Maze     MazeData     `json:"maze" binding:"required"`
+	Solution MazeSolution `json:"solution" binding:"required"`
+	Score    int          `json:"score" binding:"required"`
 }
 
 type InputMazeDelete struct {

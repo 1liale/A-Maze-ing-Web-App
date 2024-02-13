@@ -52,8 +52,12 @@ func main() {
 	// require auth for requests that modify DB
 	auth := router.Group("/").Use(middlewares.CheckJWT(conf.Audience, conf.Domain))
 	{
+		// create a new user if it doesn't exist in DB
+		auth.GET("/user/:user", handlers.CheckCreateUser)
+		// delete user from DB
+		auth.DELETE("/user/:user", handlers.RemoveUser)
 		// create maze record for user (update if user exists already)
-		router.PUT("/maze/:user", handlers.SaveMaze)
+		auth.PUT("/maze/:user", handlers.SaveMaze)
 		// delete a user's maze records
 		auth.DELETE("/maze/:user", handlers.DeleteMazes)
 	}
