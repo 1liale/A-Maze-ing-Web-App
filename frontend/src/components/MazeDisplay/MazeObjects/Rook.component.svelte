@@ -29,7 +29,7 @@ Title: Low Poly Chess - Rook
     };
   };
 
-  const gltf = useGltf<GLTFResult>('/src/assets/rook.glb', { useDraco: true });
+  const gltf = useGltf<GLTFResult>('/rook.glb', { useDraco: true });
 
   const component = forwardEventHandlers();
 </script>
