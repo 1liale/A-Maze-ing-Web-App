@@ -6,16 +6,17 @@
     tableMapperValues,
     type PaginationSettings,
   } from '@skeletonlabs/skeleton';
-  import { mazeScores } from '@stores/data.stores';
+  import type { MazeScore } from 'types/maze.types';
 
-  let paginationSettings: PaginationSettings = {
+  export let scores: MazeScore[] = [];
+
+  let paginationSettings = {
     page: 0,
     limit: 5,
-    size: $mazeScores.length,
+    size: scores.length,
     amounts: [1, 2, 5],
-  };
-
-  $: paginatedSource = tableMapperValues($mazeScores, ['name', 'time']).slice(
+  } satisfies PaginationSettings;
+  $: paginatedSource = tableMapperValues(scores, ['name', 'score']).slice(
     paginationSettings.page * paginationSettings.limit,
     paginationSettings.page * paginationSettings.limit + paginationSettings.limit,
   );
@@ -27,7 +28,7 @@
     <Table
       interactive
       source={{
-        head: ['Player', 'Solve Time'],
+        head: ['Player', 'Score'],
         body: paginatedSource,
       }}
       regionBody="variant-ghost rounded"

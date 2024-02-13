@@ -27,7 +27,7 @@ func GetScoreboard(ctx *gin.Context) {
 
 	// Retrieve the top 5 users sorted by FastestSolveTime
 	var users []models.User
-	db.Order("fastest_solve_time").Limit(limit).Find(&users)
+	db.Order("highscore DESC").Limit(limit).Find(&users)
 
 	ctx.JSON(http.StatusOK, gin.H{"response": users})
 }

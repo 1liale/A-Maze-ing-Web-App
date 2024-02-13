@@ -1,17 +1,18 @@
 import { fromMazeToMapped } from '@services/display.service';
+import { localStorageStore } from '@skeletonlabs/skeleton';
 import type { Readable } from 'svelte/motion';
 import { derived, writable, type Writable } from 'svelte/store';
 import type { MazeData, MazeInput, MazeMeta, MazeScore } from 'types/maze.types';
 
-export const apiData: Writable<{ [key: string]: any }> = writable({});
+export const apiData: Writable<{ [key: string]: any }> = localStorageStore('apiData', {});
 
-const defaultInput: MazeInput = {
+export const defaultInput: MazeInput = {
   width: 3,
   height: 3,
   generator: 'prim',
   solver: 'bfs',
 };
-export const mazeInput: Writable<MazeInput> = writable(defaultInput);
+export const mazeInput: Writable<MazeInput> = localStorageStore('mazeInput', defaultInput);
 
 export const mazeData: Readable<MazeData | undefined> = derived(
   [apiData, mazeInput],
@@ -42,18 +43,4 @@ export const mazeMeta: Readable<MazeMeta | undefined> = derived([apiData], ([$ap
   return undefined;
 });
 
-const defaultMazeScores: MazeScore[] = [
-  { name: 'Test', time: 1 },
-  { name: 'Test', time: 2 },
-  { name: 'Test', time: 3 },
-  { name: 'Test', time: 4 },
-  { name: 'Test', time: 5 },
-  { name: 'Test', time: 1 },
-  { name: 'Test', time: 2 },
-  { name: 'Test', time: 3 },
-  { name: 'Test', time: 4 },
-  { name: 'Test', time: 5 },
-];
-export const mazeScores: Writable<MazeScore[]> = writable(defaultMazeScores);
-
-export const solveTime: Writable<number> = writable(0);
+export const mazeScores: Writable<MazeScore[]> = writable([]);

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import InstructionGroup from '@components/InstructionGroup/InstructionGroup.component.svelte';
+  import InstructionBox from '@components/InstructionBox/InstructionBox.component.svelte';
   import MazeDisplay from '@components/MazeDisplay/MazeDisplay.component.svelte';
 </script>
 
@@ -7,5 +7,5 @@
   <div class="h-5/6">
     <MazeDisplay />
   </div>
-  <InstructionGroup />
+  <InstructionBox />
 </div>

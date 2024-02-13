@@ -5,6 +5,7 @@
   import { T } from '@threlte/core';
   import { OrbitControls } from '@threlte/extras';
   import { MazeStatus } from 'types/maze.types';
+  import { SideBarState } from 'types/sidebar.types';
   import Block from './MazeObjects/Block.component.svelte';
   import Player from './MazeObjects/Player.component.svelte';
 
@@ -23,7 +24,7 @@
       <Block height={wallHeight} position={getMappedPosition(index, wallHeight / 2, $mazeData)} />
     {/if}
   {/each}
-  {#if $state === 'started' || $state === 'finished'}
+  {#if $state === SideBarState.STARTED || $state === SideBarState.FINISHED}
     <Block
       color="#ff3e00"
       height={pathHeight}

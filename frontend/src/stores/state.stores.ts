@@ -1,7 +1,36 @@
-import { writable, type Writable } from 'svelte/store';
+import { localStorageStore } from '@skeletonlabs/skeleton';
+import { type Writable } from 'svelte/store';
 import type { Player } from 'types/player.types';
-import type { SideBarState } from 'types/sidebar.types';
+import { SideBarState } from 'types/sidebar.types';
 
-export const sidebarState: Writable<SideBarState> = writable('init');
+export const sidebarState: Writable<SideBarState> = localStorageStore('state', SideBarState.INIT);
 
-export const playerState: Writable<Player | undefined> = writable(undefined);
+export const defaultPlayer: Player = {
+  mappedPos: undefined,
+  relPos: undefined,
+  moves: 0,
+  hasWon: false,
+};
+export const playerState: Writable<Player> = localStorageStore('playerState', defaultPlayer);
+
+export const solveTime: Writable<number> = localStorageStore('solveTime', 0);
+
+const setupGame = () => {
+  sidebarState.set(SideBarState.SETUP);
+};
+
+const startGame = () => {
+  sidebarState.set(SideBarState.STARTED);
+};
+
+const stopGame = () => {
+  sidebarState.set(SideBarState.FINISHED);
+};
+
+const resetGame = () => {
+  solveTime.set(0);
+  playerState.set(defaultPlayer);
+  sidebarState.set(SideBarState.INIT);
+};
+
+export { resetGame, setupGame, startGame, stopGame };

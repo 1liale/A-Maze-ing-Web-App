@@ -1,9 +1,11 @@
 <script lang="ts">
-  import { solveTime } from '@stores/data.stores';
-  import { sidebarState as state } from '@stores/state.stores';
+  import { solveTime, sidebarState as state } from '@stores/state.stores';
+  import { SideBarState } from 'types/sidebar.types';
   const interval = 1000; // Interval in milliseconds
-  let elapsedSeconds = 0;
+
   let timerInterval: any;
+
+  $: elapsedSeconds = $solveTime;
 
   const startTimer = () => {
     const timerInterval = setInterval(() => {
@@ -17,13 +19,16 @@
     clearInterval(timerInterval);
   };
 
-  state.subscribe((val: string) => {
+  state.subscribe((val: SideBarState) => {
     if (timerInterval) {
       stopTimer(timerInterval);
       $solveTime = elapsedSeconds;
     }
-    if (val === 'started') {
-      timerInterval = startTimer();
+    if (val !== SideBarState.FINISHED) {
+      $solveTime = 0;
+      if (val === SideBarState.STARTED) {
+        timerInterval = startTimer();
+      }
     }
   });
 </script>
