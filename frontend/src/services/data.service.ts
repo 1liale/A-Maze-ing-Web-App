@@ -44,6 +44,7 @@ export const removeUser = async (authToken: string, userInfo: User) => {
 export const getMazesList = async () => {};
 
 export const generateMaze = async (mazeInput: MazeInput) => {
+  console.log('api_url', apiUrl);
   const options = {
     url: `${apiUrl}/maze/generate`,
     method: 'POST',

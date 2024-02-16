@@ -4,48 +4,64 @@
 package main
 
 import (
+	"context"
+	"os"
+
 	"github.com/1liale/maze-backend/config"
 	"github.com/1liale/maze-backend/handlers"
 	"github.com/1liale/maze-backend/middlewares"
+	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/joho/godotenv"
+	"github.com/sirupsen/logrus"
 
 	cors "github.com/rs/cors/wrapper/gin"
 
-	"github.com/joho/godotenv"
-	"github.com/sirupsen/logrus"
 	ginlogrus "github.com/toorop/gin-logrus"
 	"gorm.io/gorm"
 
 	"github.com/gin-gonic/gin"
+
+	ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin"
 )
 
 var logger *middlewares.CustomStdLogger
 var db *gorm.DB
 var conf *config.Config
+var ginLambda *ginadapter.GinLambda
 
 func init() {
-	// load environment variables from .env
 	err := godotenv.Load()
 	if err != nil {
-		logrus.Fatal(err)
+		logrus.Info("Error loading environment variables from .env, running ENV vars must be already set!")
 	}
-	db = middlewares.InitDB()
-	logger = middlewares.InitLogger()
-	conf = config.InitConfig()
-}
 
-func main() {
-	// init gin server
+	env := os.Getenv("GIN_MODE")
+	db = middlewares.InitDB()
+	conf = config.InitConfig()
 	router := gin.New()
 
-	// middlewares
-	router.Use(
-		ginlogrus.Logger(logger),
-		gin.Recovery(),
-		middlewares.ErrorHandler(),
-		middlewares.PropDBEnv(db),
-		// secure.Secure(conf.SecureOptions), TODO: enable this in production
-		cors.New(conf.CorsOptions),
-	)
+	switch env {
+	case "release":
+		router.Use(
+			ginlogrus.Logger(logrus.New()),
+			gin.Recovery(),
+			middlewares.ErrorHandler(),
+			middlewares.PropDBEnv(db),
+			cors.New(conf.CorsOptions),
+		)
+	default:
+		logger = middlewares.InitLogger()
+		// middlewares
+		router.Use(
+			ginlogrus.Logger(logger),
+			gin.Recovery(),
+			middlewares.ErrorHandler(),
+			middlewares.PropDBEnv(db),
+			// secure.Secure(conf.SecureOptions), TODO: enable this in production
+			cors.New(conf.CorsOptions),
+		)
+	}
 
 	router.GET("/api-health", handlers.SystemCheck)
 
@@ -74,5 +90,22 @@ func main() {
 	// solve an unknown maze and send back solution
 	router.POST("/maze/solve", handlers.SolveMaze)
 
-	router.Run(conf.Port)
+	switch env {
+	case "release":
+		ginLambda = ginadapter.New(router)
+	default:
+		router.Run(conf.Port)
+	}
+}
+
+func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	// If no name is provided in the HTTP request body, throw an error
+	return ginLambda.ProxyWithContext(ctx, req)
+}
+
+func main() {
+	env := os.Getenv("GIN_MODE")
+	if env == "release" {
+		lambda.Start(Handler)
+	}
 }
