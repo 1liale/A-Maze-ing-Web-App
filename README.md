@@ -1,12 +1,11 @@
-# A-Maze-ing
+# A-Maze-ing 
 
-A personal project to develop new skills in infrastructure automation, CI/CD, DS & Algo, and fullstack web development.
-
-Ultimately, the goal of this project is less about the exact content it serves, which is a fun program that generates and solves perfect mazes. Instead, by going through each step from ideation to production, I hope to challenge myself to become a better developer.
+A personal project to develop new skills in infrastructure automation, CI/CD, DS & Algo, and fullstack web development. 
+Goal is to generate an interactive and playable 3D maze for the player to navigate and explore!
 
 ![alt text](/assets/maze_gui.png)
 
-## Quick Start
+## Quick Start [Status: In Maintenance (paused AWS services due to free-tier expiry)]
 
 ### Local Dev
 
