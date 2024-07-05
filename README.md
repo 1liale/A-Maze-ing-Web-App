@@ -78,9 +78,9 @@ e.g generate a 20x20 maze with prim and solve using bfs
   - Svelte + Vite &nbsp;&nbsp; ✅
   - TailwindCSS &nbsp;&nbsp;✅
   - Skeleton UI &nbsp;&nbsp;✅
-  - Vercel for hosting
+  - Vercel for hosting &nbsp;&nbsp;✅
   - Vitest tests &nbsp;&nbsp;✅
-  - Three.js for rendering maze / user interaction (in progress!) &nbsp;&nbsp;❌
+  - Threlte for rendering maze / user interaction &nbsp;&nbsp;✅
   - Auth0 (login / sign-up / logout) &nbsp;&nbsp;✅
 - Backend
   - Gin-gonic API &nbsp;&nbsp;✅
@@ -89,8 +89,8 @@ e.g generate a 20x20 maze with prim and solve using bfs
     - Authentication (validate client's JWT access token from Auth0) &nbsp;&nbsp;✅
     - Middlewares:
       - CORS &nbsp;&nbsp;✅
-      - Security (prevent XSS, CSRF) &nbsp;&nbsp;❌
-      - JWT validation
+      - Security (prevent XSS, CSRF)
+      - JWT validation &nbsp;&nbsp;✅
       - Logger with rotation &nbsp;&nbsp;✅
       - Global error handling with standardized error output &nbsp;&nbsp;✅
   - Services written in Go &nbsp;&nbsp;✅
