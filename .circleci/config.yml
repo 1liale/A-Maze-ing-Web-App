@@ -10,7 +10,7 @@ jobs:
       - checkout
       - run:
           name: Print path
-          command: pwd
+          command: ls
       - run:
           name: Install Vercel CLI
           command: npm install --global vercel@latest
