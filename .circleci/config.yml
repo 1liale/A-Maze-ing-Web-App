@@ -10,7 +10,8 @@ jobs:
     working_directory: ~/project/frontend
 
     steps:
-      - checkout
+      - checkout:
+          path: ~/project
       - run:
           name: Print path
           command: ls
