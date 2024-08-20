@@ -1,8 +1,10 @@
-# Infrastructure
+# Infrastructure 
 
-## [REMOVED SUPPORT] Experimentation with provisioning Jenkins on the cloud
+[ Previous Implementation - REFERENCE ONLY, NOT IN USE! ]
 
-> Reason for removal: ec2 upkeep cost exceeding free-tier budget
+> Reason for change: aws free-tier expiry, moved to free hosting
+
+## Experimentation with provisioning Jenkins on the cloud
 
 Automated provision of cloud resources using Packer + Terraform
 
