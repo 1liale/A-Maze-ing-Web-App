@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   preview_deployment:
     docker:
-      - image: circleci/node:20.16.0
+      - image: cimg/node:20.16.0
     environment:
       VERCEL_ORG_ID: HOhfPwXWxqCxCPw8lI4vkFX8
       VERCEL_PROJECT_ID: prj_VX1yDKYkqQLnM2s4wQHswKzjA7ki
@@ -24,7 +24,7 @@ jobs:
 
   production_deployment:
     docker:
-      - image: circleci/node:20.16.0
+      - image: cimg/node:20.16.0
     environment:
       VERCEL_ORG_ID: $VERCEL_ORG_ID
       VERCEL_PROJECT_ID: $VERCEL_PROJECT_ID
