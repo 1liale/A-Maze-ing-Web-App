@@ -7,11 +7,10 @@ jobs:
       VERCEL_ORG_ID: $VERCEL_ORG_ID
       VERCEL_PROJECT_ID: $VERCEL_PROJECT_ID
     
-    working_directory: ~/project/frontend
+    # working_directory: ~/project/frontend
 
     steps:
-      - checkout:
-          path: ~/project
+      - checkout
       - run:
           name: Print path
           command: ls
