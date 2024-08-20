@@ -2,18 +2,13 @@ version: 2.1
 jobs:
   preview_deployment:
     docker:
-      - image: circleci/node:20
+      - image: circleci/node:20.16.0
     environment:
       VERCEL_ORG_ID: HOhfPwXWxqCxCPw8lI4vkFX8
       VERCEL_PROJECT_ID: prj_VX1yDKYkqQLnM2s4wQHswKzjA7ki
-    
-    # working_directory: ~/project/frontend
 
     steps:
       - checkout
-      - run:
-          name: Print path
-          command: ls
       - run:
           name: Install Vercel CLI
           command: sudo npm install --global vercel@latest
@@ -29,7 +24,7 @@ jobs:
 
   production_deployment:
     docker:
-      - image: circleci/node:latest
+      - image: circleci/node:20.16.0
     environment:
       VERCEL_ORG_ID: $VERCEL_ORG_ID
       VERCEL_PROJECT_ID: $VERCEL_PROJECT_ID
