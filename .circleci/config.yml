@@ -9,8 +9,8 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Navigate to Frontend Directory
-          command: cd frontend
+          name: Print path
+          command: pwd
       - run:
           name: Install Vercel CLI
           command: npm install --global vercel@latest
@@ -47,13 +47,13 @@ jobs:
 
 workflows:
   version: 2
-  preview_and_production:
+  frontend_deployment:
     jobs:
       - preview_deployment:
           filters:
             branches:
-              ignore: /main/
+              ignore: /production/
       - production_deployment:
           filters:
             branches:
-              only: /main/
+              only: /production/
