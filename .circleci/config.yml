@@ -3,13 +3,14 @@ jobs:
   preview_deployment:
     docker:
       - image: circleci/node:latest
-    working_directory: ~/A-Maze-ing/frontend
     environment:
       VERCEL_ORG_ID: $VERCEL_ORG_ID
       VERCEL_PROJECT_ID: $VERCEL_PROJECT_ID
     steps:
-      - checkout:
-        path: ~/A-Maze-ing
+      - checkout
+       - run:
+          name: Navigate to Frontend Directory
+          command: cd frontend
       - run:
           name: Install Vercel CLI
           command: npm install --global vercel@latest
@@ -31,6 +32,9 @@ jobs:
       VERCEL_PROJECT_ID: $VERCEL_PROJECT_ID
     steps:
       - checkout
+       - run:
+          name: Navigate to Frontend Directory
+          command: cd frontend
       - run:
           name: Install Vercel CLI
           command: npm install --global vercel@latest
