@@ -6,6 +6,9 @@ jobs:
     environment:
       VERCEL_ORG_ID: $VERCEL_ORG_ID
       VERCEL_PROJECT_ID: $VERCEL_PROJECT_ID
+    
+    working_directory: ~/project/frontend
+
     steps:
       - checkout
       - run:
