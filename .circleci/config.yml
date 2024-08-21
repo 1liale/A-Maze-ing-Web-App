@@ -1,0 +1,120 @@
+version: 2.1
+
+jobs:
+  build_frontend:
+    docker:
+      - image: cimg/node:20.16.0
+    steps:
+      - checkout
+      - run:
+          name: Build Frontend Project Artifacts
+          command: echo "Build Frontend Project Artifacts"
+
+  test_frontend:
+    docker:
+      - image: cimg/node:20.16.0
+    steps:
+      - checkout
+      - run:
+          name: Run Frontend Acceptance Tests
+          command: echo "Run Frontend Acceptance Tests"
+
+  build_backend:
+    docker:
+      - image: cimg/node:20.16.0
+    steps:
+      - checkout
+      - run:
+          name: Build Backend Project Artifacts
+          command: echo "Build Backend Project Artifacts"
+
+  test_backend:
+    docker:
+      - image: cimg/node:20.16.0
+    steps:
+      - checkout
+      - run:
+          name: Run Backend Acceptance Tests
+          command: echo "Run Backend Acceptance Tests"
+
+  deploy_frontend_preview:
+    docker:
+      - image: cimg/node:20.16.0
+    environment:
+      VERCEL_ORG_ID: HOhfPwXWxqCxCPw8lI4vkFX8
+      VERCEL_PROJECT_ID: prj_VX1yDKYkqQLnM2s4wQHswKzjA7ki
+    steps:
+      - checkout
+      - run:
+          name: Install Vercel CLI
+          command: sudo npm install --global vercel@latest
+      - run:
+          name: Pull Vercel Environment Information
+          command: vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
+      - run:
+          name: Build Project Artifacts
+          command: vercel build --token=$VERCEL_TOKEN
+      - run:
+          name: Deploy Project Artifacts to Vercel
+          command: vercel deploy --prebuilt --token=$VERCEL_TOKEN
+
+  deploy_frontend_prod:
+    docker:
+      - image: cimg/node:20.16.0
+    environment:
+      VERCEL_ORG_ID: HOhfPwXWxqCxCPw8lI4vkFX8
+      VERCEL_PROJECT_ID: prj_VX1yDKYkqQLnM2s4wQHswKzjA7ki
+    steps:
+      - checkout
+      - run:
+          name: Install Vercel CLI
+          command: sudo npm install --global vercel@latest
+      - run:
+          name: Pull Vercel Environment Information
+          command: vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+      - run:
+          name: Build Project Artifacts
+          command: vercel build --prod --token=$VERCEL_TOKEN
+      - run:
+          name: Deploy Project Artifacts to Vercel
+          command: vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
+
+  deploy_backend_prod:
+    docker:
+      - image: cimg/node:20.16.0
+    steps:
+      - checkout
+      - run:
+          name: Deploy Backend To PROD
+          command: echo "Deploy Backend To PROD"
+
+workflows:
+  version: 2
+  build-test-deploy:
+    jobs:
+      - build_frontend
+      - test_frontend:
+          requires:
+            - build_frontend
+      - build_backend
+      - test_backend:
+          requires:
+            - build_backend
+      - deploy_frontend_preview:
+          requires:
+            - test_frontend
+          filters:
+            branches:
+              ignore: /production/
+      - deploy_frontend_prod:
+          requires:
+            - test_frontend
+          filters:
+            branches:
+              only: /production/
+      - deploy_backend_prod:
+          requires:
+            - test_backend
+          filters:
+            branches:
+              only: /production/
