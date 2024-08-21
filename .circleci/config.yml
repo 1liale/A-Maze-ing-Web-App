@@ -1,34 +1,48 @@
 version: 2.1
+
 jobs:
   build_frontend:
+    docker:
+      - image: cimg/node:20.16.0
     steps:
+      - checkout
       - run:
           name: Build Frontend Project Artifacts
           command: echo "Build Frontend Project Artifacts"
+
   test_frontend:
+    docker:
+      - image: cimg/node:20.16.0
     steps:
+      - checkout
       - run:
           name: Run Frontend Acceptance Tests
           command: echo "Run Frontend Acceptance Tests"
+
   build_backend:
+    docker:
+      - image: cimg/node:20.16.0
     steps:
+      - checkout
       - run:
           name: Build Backend Project Artifacts
           command: echo "Build Backend Project Artifacts"
+
   test_backend:
+    docker:
+      - image: cimg/node:20.16.0
     steps:
+      - checkout
       - run:
           name: Run Backend Acceptance Tests
           command: echo "Run Backend Acceptance Tests"
 
-  # Automated deployment for preview and prod environments
   deploy_frontend_preview:
     docker:
       - image: cimg/node:20.16.0
     environment:
       VERCEL_ORG_ID: HOhfPwXWxqCxCPw8lI4vkFX8
       VERCEL_PROJECT_ID: prj_VX1yDKYkqQLnM2s4wQHswKzjA7ki
-
     steps:
       - checkout
       - run:
@@ -66,6 +80,8 @@ jobs:
           command: vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
 
   deploy_backend_prod:
+    docker:
+      - image: cimg/node:20.16.0
     steps:
       - checkout
       - run:
@@ -96,9 +112,7 @@ workflows:
           filters:
             branches:
               only: /production/
-
-      # only deploy backend on production branch
-      - deploy_backend:
+      - deploy_backend_prod:
           requires:
             - test_backend
           filters:
