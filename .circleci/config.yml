@@ -144,7 +144,7 @@ jobs:
     executor: heroku/default
     steps:
       - checkout:
-        path: ~/project
+          path: ~/project
       - heroku/install
       - run:
           name: Print Current Directory
