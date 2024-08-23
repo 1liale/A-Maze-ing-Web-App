@@ -145,8 +145,14 @@ jobs:
       - checkout
       - heroku/install
       - run:
+          name: Authenticate with Heroku
+          command: echo "$HEROKU_API_KEY" | heroku auth:token
+      - run:
+          name: Add Heroku Remote
+          command: git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git
+      - run:
           name: Push to Heroku
-          command: git subtree push --prefix=backend https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git main
+          command: git push --force heroku `git subtree split --prefix=backend main`:main
 
 workflows:
   heroku_deploy:
