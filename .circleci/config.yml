@@ -140,13 +140,19 @@ orbs:
   heroku: circleci/heroku@2.0
 jobs:
   deploy:
-    working_directory: ~/project/backend
     executor: heroku/default
     steps:
-      - checkout:
-          path: ~/project
+      - checkout
       - heroku/install
-      - heroku/deploy-via-git
+      - run:
+          name: Authenticate with Heroku
+          command: echo "$HEROKU_API_KEY" | heroku auth:token
+      - run:
+          name: Add Heroku Remote
+          command: git remote add heroku https://git.heroku.com/maze-backend.git
+      - run:
+          name: Push to Heroku
+          command: git subtree push --prefix=backend heroku main
 
 workflows:
   heroku_deploy:
