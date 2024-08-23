@@ -5,6 +5,8 @@ import (
 
 	"github.com/gin-gonic/contrib/secure"
 	"github.com/rs/cors"
+
+	"github.com/sirupsen/logrus"
 )
 
 type Config struct {
@@ -44,6 +46,8 @@ func InitConfig() *Config {
 	clientOriginUrl := os.Getenv("CLIENT_ORIGIN_URL")
 	audience := os.Getenv("AUTH0_AUDIENCE")
 	domain := os.Getenv("AUTH0_DOMAIN")
+
+	logrus.Info("Client Origin Url: ", clientOriginUrl)
 
 	config := Config{
 		SecureOptions: SecureOptions(),
