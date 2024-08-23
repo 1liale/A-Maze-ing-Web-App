@@ -1,12 +1,11 @@
-# A-Maze-ing
+# A-Maze-ing 
 
-A personal project to develop new skills in infrastructure automation, CI/CD, DS & Algo, and fullstack web development.
-
-Ultimately, the goal of this project is less about the exact content it serves, which is a fun program that generates and solves perfect mazes. Instead, by going through each step from ideation to production, I hope to challenge myself to become a better developer.
+A personal project to develop new skills in infrastructure automation, CI/CD, DS & Algo, and fullstack web development. 
+Goal is to generate an interactive and playable 3D maze for the player to navigate and explore!
 
 ![alt text](/assets/maze_gui.png)
 
-## Quick Start
+## Quick Start [Status: In Maintenance (paused AWS services due to free-tier expiry)]
 
 ### Local Dev
 
@@ -79,9 +78,9 @@ e.g generate a 20x20 maze with prim and solve using bfs
   - Svelte + Vite &nbsp;&nbsp; ✅
   - TailwindCSS &nbsp;&nbsp;✅
   - Skeleton UI &nbsp;&nbsp;✅
-  - Vercel for hosting
+  - Vercel for hosting &nbsp;&nbsp;✅
   - Vitest tests &nbsp;&nbsp;✅
-  - Three.js for rendering maze / user interaction (in progress!) &nbsp;&nbsp;❌
+  - Threlte for rendering maze / user interaction &nbsp;&nbsp;✅
   - Auth0 (login / sign-up / logout) &nbsp;&nbsp;✅
 - Backend
   - Gin-gonic API &nbsp;&nbsp;✅
@@ -90,8 +89,8 @@ e.g generate a 20x20 maze with prim and solve using bfs
     - Authentication (validate client's JWT access token from Auth0) &nbsp;&nbsp;✅
     - Middlewares:
       - CORS &nbsp;&nbsp;✅
-      - Security (prevent XSS, CSRF) &nbsp;&nbsp;❌
-      - JWT validation
+      - Security (prevent XSS, CSRF)
+      - JWT validation &nbsp;&nbsp;✅
       - Logger with rotation &nbsp;&nbsp;✅
       - Global error handling with standardized error output &nbsp;&nbsp;✅
   - Services written in Go &nbsp;&nbsp;✅

@@ -1,7 +1,7 @@
 version: "3.8"
 
 # startup order: database -> server -> client
-# setup for local development to approximate prod (db is local image, final will be on RDS)
+# setup for local development to approximate prod (db is local image, final will be hosted on Heroku postgres)
 
 volumes:
   db-data:
@@ -36,7 +36,7 @@ services:
       - ./backend/.env
     healthcheck:
       test: curl -f http://localhost:8080/api-health || exit 1
-      interval: 15s
+      interval: 10s
       timeout: 3s
       retries: 3
     depends_on:
@@ -47,8 +47,10 @@ services:
     container_name: database
     image: postgres:latest
     restart: always
-    env_file:
-      - ./backend/.env
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
     volumes:
       - db-data:/var/lib/postgres/data/
     ports:

@@ -8,7 +8,6 @@ import (
 )
 
 type Config struct {
-	Port          string
 	SecureOptions secure.Options
 	CorsOptions   cors.Options
 	Audience      string
@@ -42,14 +41,12 @@ func CorsOptions(clientOriginUrl string) cors.Options {
 }
 
 func InitConfig() *Config {
-	port := ":" + os.Getenv("API_PORT")
 	clientOriginUrl := os.Getenv("CLIENT_ORIGIN_URL")
 	audience := os.Getenv("AUTH0_AUDIENCE")
 	domain := os.Getenv("AUTH0_DOMAIN")
 
 	config := Config{
-		Port:          port,
-		SecureOptions: SecureOptions(), // don't use in development
+		SecureOptions: SecureOptions(),
 		CorsOptions:   CorsOptions(clientOriginUrl),
 		Audience:      audience,
 		Domain:        domain,
