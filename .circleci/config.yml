@@ -148,11 +148,8 @@ jobs:
           name: Authenticate with Heroku
           command: echo "$HEROKU_API_KEY" | heroku auth:token
       - run:
-          name: Add Heroku Remote
-          command: git remote add heroku https://git.heroku.com/maze-backend.git
-      - run:
           name: Push to Heroku
-          command: git subtree push --prefix=backend heroku main
+          command: git subtree push --prefix=backend https://git.heroku.com/maze-backend.git main
 
 workflows:
   heroku_deploy:
