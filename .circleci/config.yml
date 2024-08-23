@@ -157,7 +157,7 @@ jobs:
           command: ls
       - run:
           name: Push to Heroku
-          command: git push --force heroku main
+          command: git push heroku main
 
 workflows:
   heroku_deploy:
