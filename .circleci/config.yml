@@ -145,7 +145,11 @@ jobs:
     steps:
       - checkout
       - heroku/install
-      - ls
+      - run:
+          name: Print Current Directory
+          command: |
+            pwd
+            ls -la
       - heroku/deploy-via-git
 workflows:
   heroku_deploy:
