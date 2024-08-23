@@ -145,11 +145,8 @@ jobs:
       - checkout
       - heroku/install
       - run:
-          name: Authenticate with Heroku
-          command: echo "$HEROKU_API_KEY" | heroku auth:token
-      - run:
           name: Push to Heroku
-          command: git subtree push --prefix=backend https://git.heroku.com/maze-backend.git main
+          command: git subtree push --prefix=backend https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git main
 
 workflows:
   heroku_deploy:
