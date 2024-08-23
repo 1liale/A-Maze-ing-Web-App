@@ -2,43 +2,32 @@ version: 2.1
 
 orbs:
   heroku: circleci/heroku@2.0
+  go: circleci/go@1.7.3
+
+executors:
+  node-executor:
+    docker:
+      - image: cimg/node:20.16.0
 
 jobs:
-  build_frontend:
-    docker:
-      - image: cimg/node:20.16.0
+  build_test_frontend:
+    working_directory: ~/project/frontend
+    executor: node-executor
     steps:
-      - checkout
+      - checkout:
+          path: ~/project
+      - run:
+          name: List Directory
+          command: ls
+      - run:
+          name: Install Dependencies
+          command: yarn install
       - run:
           name: Build Frontend Project Artifacts
-          command: echo "Build Frontend Project Artifacts"
-
-  test_frontend:
-    docker:
-      - image: cimg/node:20.16.0
-    steps:
-      - checkout
+          command: yarn build
       - run:
           name: Run Frontend Acceptance Tests
-          command: echo "Run Frontend Acceptance Tests"
-
-  build_backend:
-    docker:
-      - image: cimg/node:20.16.0
-    steps:
-      - checkout
-      - run:
-          name: Build Backend Project Artifacts
-          command: echo "Build Backend Project Artifacts"
-
-  test_backend:
-    docker:
-      - image: cimg/node:20.16.0
-    steps:
-      - checkout
-      - run:
-          name: Run Backend Acceptance Tests
-          command: echo "Run Backend Acceptance Tests"
+          command: yarn test
 
   deploy_frontend_preview:
     docker:
@@ -82,40 +71,62 @@ jobs:
           name: Deploy Project Artifacts to Vercel
           command: vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
 
+  build_test_backend:
+    working_directory: ~/project/backend
+    executor:
+      name: go/default # Use the default executor from the orb
+      tag: '1.21' # Specify a version tag
+    steps:
+      - checkout:
+          path: ~/project
+      - go/load-cache # Load cached Go modules.
+      - go/mod-download # Run 'go mod download'.
+      - go/save-cache # Save Go modules to cache.
+      - run:
+          name: Build Go Program
+          command: go build
+      - go/test: # Runs 'go test ./...' but includes extensive parameterization for finer tuning.
+          covermode: atomic
+          failfast: true
+          race: true
+
   deploy_backend_prod:
     executor: heroku/default
     steps:
       - checkout
       - heroku/install
-      - heroku/deploy-via-git
+      - run:
+          name: Authenticate with Heroku
+          command: echo "$HEROKU_API_KEY" | heroku auth:token
+      - run:
+          name: Add Heroku Remote
+          command: git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git
+      - run:
+          name: Push to Heroku
+          command: git subtree push --prefix backend heroku master
 
 workflows:
   version: 2
   build-test-deploy:
     jobs:
-      - build_frontend
-      - test_frontend:
-          requires:
-            - build_frontend
-      - build_backend
-      - test_backend:
-          requires:
-            - build_backend
+      - build_test_frontend
       - deploy_frontend_preview:
           requires:
-            - test_frontend
+            - build_test_frontend
           filters:
             branches:
               ignore: /production/
       - deploy_frontend_prod:
           requires:
-            - test_frontend
+            - build_test_frontend
           filters:
             branches:
               only: /production/
+      
+      - build_test_backend
       - deploy_backend_prod:
           requires:
-            - test_backend
-          # filters:
-          #   branches:
-          #     only: /production/
+            - build_test_backend
+          filters:
+            branches:
+              only: /production/

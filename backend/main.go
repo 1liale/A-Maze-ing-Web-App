@@ -90,13 +90,15 @@ func init() {
 	// solve an unknown maze and send back solution
 	router.POST("/maze/solve", handlers.SolveMaze)
 
-	switch env {
-	case "release":
-		ginLambda = ginadapter.New(router)
-	default:
-		router.Run(conf.Port)
+	if os.Getenv("PORT") != "" {
+		// Heroku add a env variable called PORT, if exist we will use it
+		router.Run("0.0.0.0:" + os.Getenv("PORT"))
+	} else {
+		// If is running on localhost (our computer), no PORT env variable
+		router.Run("0.0.0.0:8080")
 	}
 }
+
 
 func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	// If no name is provided in the HTTP request body, throw an error

@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
-	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 type CustomStdLogger struct {
@@ -64,27 +63,27 @@ func InitLogger() *CustomStdLogger {
 	logger.SetFormatter(&log_format)
 
 	// create api.log if it doesn't exist yet
-	log_path := "api.log"
-	_, err := os.OpenFile(log_path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		logrus.Fatal(err)
-	}
+	// log_path := "api.log"
+	// _, err := os.OpenFile(log_path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	// if err != nil {
+	// 	logrus.Fatal(err)
+	// }
 
-	file_log_levels := ParseLogLevels("FILE_LOG_LEVELS")
+	// file_log_levels := ParseLogLevels("FILE_LOG_LEVELS")
 	output_log_levels := ParseLogLevels("OUTPUT_LOG_LEVELS")
 
-	// setup logrotation using lumberjack
-	error_logrot := lumberjack.Logger{
-		Filename:   log_path,
-		MaxSize:    1, // MB
-		MaxBackups: 3,
-		MaxAge:     28, // Days
-	}
+	// // setup logrotation using lumberjack
+	// error_logrot := lumberjack.Logger{
+	// 	Filename:   log_path,
+	// 	MaxSize:    1, // MB
+	// 	MaxBackups: 3,
+	// 	MaxAge:     28, // Days
+	// }
 
-	logger.AddHook(&LogWriterHook{ // Send logs with level higher than warning to stderr
-		Writer:    &error_logrot,
-		LogLevels: file_log_levels,
-	})
+	// logger.AddHook(&LogWriterHook{ // Send logs with level higher than warning to stderr
+	// 	Writer:    &error_logrot,
+	// 	LogLevels: file_log_levels,
+	// })
 	logger.AddHook(&LogWriterHook{ // Send info and debug logs to stdout
 		Writer:    os.Stdout,
 		LogLevels: output_log_levels,
