@@ -145,6 +145,7 @@ jobs:
     steps:
       - checkout
       - heroku/install
+      - ls
       - heroku/deploy-via-git
 workflows:
   heroku_deploy:
