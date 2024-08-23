@@ -1,8 +1,5 @@
 version: 2.1
 
-orbs:
-  heroku: circleci/heroku@2.0
-
 jobs:
   build_frontend:
     docker:
@@ -83,11 +80,19 @@ jobs:
           command: vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
 
   deploy_backend_prod:
-    executor: heroku/default
+    docker:
+      - image: circleci/python:3.8
     steps:
       - checkout
-      - heroku/install
-      - heroku/deploy-via-git
+      - run:
+          name: Install Heroku CLI
+          command: curl https://cli-assets.heroku.com/install.sh | sh
+      - run:
+          name: Deploy to Heroku
+          command: |
+            echo "$HEROKU_API_KEY" | heroku auth:token
+            git remote add heroku https://git.heroku.com/maze-backend.git
+            git push heroku main
 
 workflows:
   version: 2
