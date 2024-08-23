@@ -140,10 +140,11 @@ orbs:
   heroku: circleci/heroku@2.0
 jobs:
   deploy:
-    working_directory: ~/backend
+    working_directory: ~/project/backend
     executor: heroku/default
     steps:
-      - checkout
+      - checkout:
+        path: ~/project
       - heroku/install
       - run:
           name: Print Current Directory
