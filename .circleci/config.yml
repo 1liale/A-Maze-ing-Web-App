@@ -5,9 +5,6 @@ orbs:
   go: circleci/go@1.7.3
 
 executors:
-  go-executor:
-    docker:
-      - image: cimg/go:1.21 # Use the Go Docker image that fits your Go version
   node-executor:
     docker:
       - image: cimg/node:20.16.0
@@ -130,6 +127,6 @@ workflows:
       - deploy_backend_prod:
           requires:
             - build_test_backend
-          # filters:
-          #   branches:
-          #     only: /production/
+          filters:
+            branches:
+              only: /production/
