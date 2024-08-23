@@ -93,6 +93,7 @@ func init() {
 	if os.Getenv("PORT") != "" {
 		// Heroku add a env variable called PORT, if exist we will use it
 		router.Run("0.0.0.0:" + os.Getenv("PORT"))
+		
 	} else {
 		// If is running on localhost (our computer), no PORT env variable
 		router.Run("0.0.0.0:8080")
