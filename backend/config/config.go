@@ -49,7 +49,7 @@ func InitConfig() *Config {
 
 	config := Config{
 		Port:          port,
-		SecureOptions: SecureOptions(), // don't use in development
+		SecureOptions: SecureOptions(),
 		CorsOptions:   CorsOptions(clientOriginUrl),
 		Audience:      audience,
 		Domain:        domain,
