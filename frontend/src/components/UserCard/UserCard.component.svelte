@@ -35,7 +35,7 @@
       on:click={callRemoveUser}
       class="btn variant-soft-error border-2 border-transparent hover:border-primary-400/30 w-full rounded"
     >
-      Remove User
+      Clear Records
     </button>
     <Auth0LogoutButton class="soft-action-button w-full">Logout</Auth0LogoutButton>
   </div>

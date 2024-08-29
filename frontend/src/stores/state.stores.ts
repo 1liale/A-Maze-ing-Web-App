@@ -19,6 +19,10 @@ const setupGame = () => {
   sidebarState.set(SideBarState.SETUP);
 };
 
+const readyGame = () => {
+  sidebarState.set(SideBarState.WAITING)
+}
+
 const startGame = () => {
   sidebarState.set(SideBarState.STARTED);
 };
@@ -33,4 +37,8 @@ const resetGame = () => {
   sidebarState.set(SideBarState.INIT);
 };
 
-export { resetGame, setupGame, startGame, stopGame };
+const showSolution = () => {
+  sidebarState.set(SideBarState.SHOW_SOLUTION)
+}
+
+export { resetGame, setupGame, startGame, stopGame, showSolution, readyGame };

@@ -5,7 +5,7 @@ Goal is to generate an interactive and playable 3D maze for the player to naviga
 
 ![alt text](/assets/maze_gui.png)
 
-## Quick Start [Status: In Maintenance (paused AWS services due to free-tier expiry)]
+## Quick Start
 
 ### Local Dev
 
@@ -99,28 +99,28 @@ e.g generate a 20x20 maze with prim and solve using bfs
   - Testing: httptest and testify (partial ❌)
   - Database
     - Postgres &nbsp;&nbsp;✅
-- DevOps & Infrastructure &nbsp;&nbsp;(partial) ❌
+- DevOps & Infrastructure &nbsp;&nbsp; ✅
 
   - GitHub actions + Status Checks on PR
   - GitHub main branch protection
-  - Jenkins Pipeline (Experiment with CI)
-  - Dockerfiles with multi-stage builds to minimize image size
-  - Docker-compose
+  - CircleCi
+  - Dockerfiles with multi-stage builds to minimize image size (local dev only currently, but considered pushing/pull to registry as well)
+  - Docker-compose (local dev)
     - synchronize local development
-    - service ordering using healthchecks and condition
-  - Terraform to provision AWS resources
+    - service ordering with health checks
+  - Terraform to provision AWS resources (Not in use anymore)
     - Declarative soltuion with HCL
     - Provisioned VPC, Subnets, IG, EC2, SG, ASG, RDS, ASG, IAM
   - Packer to bake AWS AMI for Jenkins master and workers
 
 ## Key Objectives:
 
-1. Set up and experiment with CI/CD (i.e. Jenkins Pipeline / Github Actions)
+1. Set up and experiment with CI/CD (i.e. Github Actions, CircleCI, Jenkins)
 2. Generate and optimize Dockerfiles for each container (Multi-stage builds + caching)
-3. Configure & integrate containers following a microservices architecture (Orchestrate locally with Docker Compose)
+3. Work with Docker containers and orchestrate locally with Docker Compose
 4. Demonstrate understanding of key Golang concepts by generating and solving mazes (i.e. api setup, concurrency with goroutines + wait groups + channels, etc. )
 5. Achieve seamless integration between frontend UI views and backend services.
-6. Cloud deployment with AWS
+6. Cloud deployment with AWS/Heroku/Vercel
 7. Leverage IaC with Terraform to declaratively provision cloud resources
 8. Use Packer to bake custom AMIs
 
