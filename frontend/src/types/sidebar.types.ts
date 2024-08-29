@@ -4,4 +4,5 @@ export enum SideBarState {
   SETUP,
   STARTED,
   FINISHED,
+  SHOW_SOLUTION
 }

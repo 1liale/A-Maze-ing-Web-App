@@ -7,7 +7,7 @@ docker-compose.override.yml
 .vscode/
 
 # macOS
-*/.DS_Store
+**/.DS_Store
 
 # Temporary files
 *.log

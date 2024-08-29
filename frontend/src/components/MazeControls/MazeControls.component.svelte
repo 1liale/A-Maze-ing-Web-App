@@ -13,8 +13,10 @@
     setupGame,
     solveTime,
     startGame,
+    showSolution,
     sidebarState as state,
     stopGame,
+    readyGame
   } from '@stores/state.stores';
   import type { MazeSaveFormat } from 'types/maze.types';
   import { SideBarState } from 'types/sidebar.types';
@@ -27,7 +29,7 @@
 
   const callGenerateMaze = async () => {
     mazeInput.set(input);
-    await generateMaze(input).then(() => ($state = SideBarState.WAITING));
+    await generateMaze(input).then(readyGame);
   };
 
   const callSaveMaze = async () => {
@@ -62,24 +64,27 @@
   <div class="h-full flex flex-col justify-end gap-4">
     {#if $state === SideBarState.INIT}
       <div id="base-input-group" class="flex flex-col gap-3">
-        <span class="flex gap-6"
-          >Width: <input
+        <span class="flex gap-6">
+          Width:
+          <input
             type="range"
             bind:value={input.width}
             min={sliderRange.min}
             max={sliderRange.max}
           />
-          {input.width}px</span
+          <p class="w-12">{input.width} x</p>
+        </span
         >
-        <span class="flex gap-6"
-          >Height: <input
+        <span class="flex gap-6">
+          Height: 
+          <input
             type="range"
             bind:value={input.height}
             min={sliderRange.min}
             max={sliderRange.max}
           />
-          {input.height}px</span
-        >
+          <p class="w-12">{input.height} x</p>
+        </span>
         <span class="flex gap-6"
           >Generator:
           <select
@@ -103,7 +108,7 @@
       <div class="flex flex-col gap-2">
         <button on:click={callGenerateMaze} class="action-button"> Generate </button>
         <!-- TODO: Implement solve feature in V2 -->
-        <button on:click={setupGame} class="action-button"> Solve </button>
+        <!-- <button on:click={setupGame} class="action-button"> Setup Maze </button> -->
       </div>
     {:else if $state === SideBarState.SETUP}
       <aside class="alert variant-filled-error">
@@ -112,7 +117,11 @@
           <p>Feature currently unavailable!</p>
         </div>
       </aside>
-      <ReturnButton className="w-full" onClick={resetGame} />
+      <span class="flex gap-2">
+        <ReturnButton className="w-20" onClick={resetGame} />
+        <button on:click={readyGame} class="action-button grow"> Done </button>
+      </span>
+      
     {:else}
       <Timer />
       <span class="flex gap-2">
@@ -123,12 +132,13 @@
         />
         {#if $state === SideBarState.WAITING}
           <button on:click={startGame} class="action-button grow"> Start </button>
-        {:else if $state === SideBarState.FINISHED}
+        {:else if $state === SideBarState.FINISHED || $state === SideBarState.SHOW_SOLUTION }
           {#if $playerState.hasWon}
             <SaveButton disabled={!$isAuthenticated} onClick={callSaveMaze} className="grow" />
           {:else}
-            <!-- TODO: Implement show solution feature in V2 -->
-            <button on:click={setupGame} class="action-button grow"> Show Solution </button>
+            <button on:click={$state === SideBarState.FINISHED ? showSolution : stopGame} class="action-button grow">
+              {$state === SideBarState.FINISHED ? "Show Solution" : "Hide Solution"} 
+            </button>
           {/if}
         {:else}
           <button on:click={stopGame} class="action-button grow"> Stop </button>
