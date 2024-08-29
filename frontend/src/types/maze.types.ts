@@ -14,6 +14,8 @@ export enum MazeStatus {
 export interface MazeData extends Maze {
   start: number;
   end: number;
+  solution: number[];
+  history: number[][];
 }
 
 export interface Maze {
@@ -26,11 +28,6 @@ export interface MazeSaveFormat {
   maze: Maze;
   solution: number[];
   score: number;
-}
-
-export interface MazeMeta {
-  solution: number[];
-  history: number[][];
 }
 
 export interface MazeInput {

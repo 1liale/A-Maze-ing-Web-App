@@ -24,7 +24,7 @@
       stopTimer(timerInterval);
       $solveTime = elapsedSeconds;
     }
-    if (val !== SideBarState.FINISHED) {
+    if (!(val === SideBarState.FINISHED || val === SideBarState.SHOW_SOLUTION)) {
       $solveTime = 0;
       if (val === SideBarState.STARTED) {
         timerInterval = startTimer();
