@@ -70,10 +70,6 @@ The following endpoints are currently currently well defined:
 e.g generate a 20x20 maze with prim and solve using bfs
 ![Alt text](/assets/maze_cli.png)
 
-### Environments
-
-> Currently only supports DEV, no STAGE / PROD environment configured!
-
 ## Tools / Technologies
 
 > ✅ -> Currently included, ❌ -> Not yet / partially
