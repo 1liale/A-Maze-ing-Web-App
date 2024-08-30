@@ -1,9 +1,13 @@
 # A-Maze-ing 
+ 
+## Objective
+The primary purpose of this application is to generate an interactive 3D maze game for players to navigate and explore!
 
-A personal project to develop new skills in infrastructure automation, CI/CD, DS & Algo, and fullstack web development. 
-Goal is to generate an interactive and playable 3D maze for the player to navigate and explore!
+Through this explorative process of developing an application from start to finish, I hope to develop new skills in IaC automation, CI/CD pipelines, software architecture, 3D rendering on the web and fullstack development.
 
-![alt text](/assets/maze_gui.png)
+> Note: From August, 2024 onward, service has been moved to vercel. You can check out this project at https://a-maze-ing-ivory.vercel.app 
+
+[![alt text](/assets/maze_gui.png)](https://a-maze-ing-ivory.vercel.app)
 
 ## Quick Start
 
